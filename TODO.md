@@ -1,2 +1,4 @@
-# Possible changes
-- move generated proto files from `v1` dir in project root to `proto/bookdir/v1`
+# next steps
+- add grpc-gateway and figure out the third-party includes
+- different ports for rest and grpc
+- use etcd for storage

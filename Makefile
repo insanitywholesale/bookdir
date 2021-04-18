@@ -11,3 +11,6 @@ getprotodeps:
 makeprotos:
 	export GO111MODULE=on
 	protoc -I ./proto/ --go_out=. --go_opt=module=gitlab.com/insanitywholesale/bookdir --go-grpc_out=. --go-grpc_opt=module=gitlab.com/insanitywholesale/bookdir proto/bookdir/v1/*.proto
+
+protos:
+	protoc -I ./proto/ --go_out=. --go_opt=module=gitlab.com/insanitywholesale/bookdir --go-grpc_out=. --go-grpc_opt=module=gitlab.com/insanitywholesale/bookdir proto/v1/*.proto

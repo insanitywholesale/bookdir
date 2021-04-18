@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package bookdir.v1;
-option go_package = "gitlab.com/insanitywholesale/bookdir/v1";
+option go_package = "gitlab.com/insanitywholesale/bookdir/proto/v1";
 
 service BookDirService {
 	rpc GetAllBooks(NoArguments) returns (BookList) {};

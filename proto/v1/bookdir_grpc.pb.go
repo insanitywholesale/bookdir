@@ -133,5 +133,5 @@ var BookDirService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "bookdir/v1/bookdir.proto",
+	Metadata: "v1/bookdir.proto",
 }
