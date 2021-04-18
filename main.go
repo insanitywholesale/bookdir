@@ -1,14 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"os"
-	"net"
 	"log"
-	"context"
+	"net"
+	"os"
 )
 
 const serviceName string = "bookdir"

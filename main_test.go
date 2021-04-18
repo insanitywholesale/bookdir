@@ -1,12 +1,12 @@
 package main
 
 import (
-	"testing"
-	"google.golang.org/grpc/test/bufconn"
-	"google.golang.org/grpc"
 	"context"
-	"net"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/test/bufconn"
+	"net"
+	"testing"
 )
 
 // Test shitpost
@@ -22,7 +22,7 @@ func TestGetServiceName(t *testing.T) {
 
 // Test gRPC
 func TestGetAllBooks(t *testing.T) {
-	const bufsize = 1024*1024
+	const bufsize = 1024 * 1024
 	var l *bufconn.Listener
 	l = bufconn.Listen(bufsize)
 	s := grpc.NewServer()
