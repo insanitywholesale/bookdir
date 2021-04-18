@@ -13,7 +13,7 @@ import (
 
 const serviceName string = "bookdir"
 
-type server struct {
+type Server struct {
 	// needed for forward compat for some reason
 	pb.UnimplementedBookDirServer
 }
@@ -22,14 +22,14 @@ func getServiceName() string {
 	return serviceName
 }
 
-func (server) GetAllBooks(_ context.Context, _ *pb.NoArguments) (*pb.BookList, error) {
+func (Server) GetAllBooks(_ context.Context, _ *pb.Empty) (*pb.BookList, error) {
 	fmt.Println("getallbooks")
-	return nil, nil
+	return &pb.BookList{}, nil
 }
 
-func (server) AddBook(ctx context.Context, book *pb.Book) (*pb.BookList, error) {
+func (Server) AddBook(ctx context.Context, book *pb.Book) (*pb.BookList, error) {
 	fmt.Println("addbook")
-	return nil, nil
+	return &pb.BookList{}, nil
 }
 
 func main() {
@@ -46,7 +46,7 @@ func main() {
 		log.Fatalf("listen failed %v", err)
 	}
 	grpcServer := grpc.NewServer()
-	pb.RegisterBookDirServer(grpcServer, server{})
+	pb.RegisterBookDirServer(grpcServer, Server{})
 	reflection.Register(grpcServer)
 	grpcServer.Serve(listener)
 }

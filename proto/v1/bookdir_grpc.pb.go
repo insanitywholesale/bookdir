@@ -18,7 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BookDirClient interface {
-	GetAllBooks(ctx context.Context, in *NoArguments, opts ...grpc.CallOption) (*BookList, error)
+	GetAllBooks(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BookList, error)
 	AddBook(ctx context.Context, in *Book, opts ...grpc.CallOption) (*BookList, error)
 }
 
@@ -30,7 +30,7 @@ func NewBookDirClient(cc grpc.ClientConnInterface) BookDirClient {
 	return &bookDirClient{cc}
 }
 
-func (c *bookDirClient) GetAllBooks(ctx context.Context, in *NoArguments, opts ...grpc.CallOption) (*BookList, error) {
+func (c *bookDirClient) GetAllBooks(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BookList, error) {
 	out := new(BookList)
 	err := c.cc.Invoke(ctx, "/bookdir.v1.BookDir/GetAllBooks", in, out, opts...)
 	if err != nil {
@@ -52,7 +52,7 @@ func (c *bookDirClient) AddBook(ctx context.Context, in *Book, opts ...grpc.Call
 // All implementations must embed UnimplementedBookDirServer
 // for forward compatibility
 type BookDirServer interface {
-	GetAllBooks(context.Context, *NoArguments) (*BookList, error)
+	GetAllBooks(context.Context, *Empty) (*BookList, error)
 	AddBook(context.Context, *Book) (*BookList, error)
 	mustEmbedUnimplementedBookDirServer()
 }
@@ -61,7 +61,7 @@ type BookDirServer interface {
 type UnimplementedBookDirServer struct {
 }
 
-func (UnimplementedBookDirServer) GetAllBooks(context.Context, *NoArguments) (*BookList, error) {
+func (UnimplementedBookDirServer) GetAllBooks(context.Context, *Empty) (*BookList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllBooks not implemented")
 }
 func (UnimplementedBookDirServer) AddBook(context.Context, *Book) (*BookList, error) {
@@ -81,7 +81,7 @@ func RegisterBookDirServer(s grpc.ServiceRegistrar, srv BookDirServer) {
 }
 
 func _BookDir_GetAllBooks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NoArguments)
+	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -93,7 +93,7 @@ func _BookDir_GetAllBooks_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/bookdir.v1.BookDir/GetAllBooks",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookDirServer).GetAllBooks(ctx, req.(*NoArguments))
+		return srv.(BookDirServer).GetAllBooks(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }

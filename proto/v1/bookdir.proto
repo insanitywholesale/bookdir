@@ -7,7 +7,7 @@ import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 service BookDir {
-	rpc GetAllBooks(NoArguments) returns (BookList) {
+	rpc GetAllBooks(Empty) returns (BookList) {
 		option (google.api.http) = {
 			get: "/api/v1/books"
 		};
@@ -18,11 +18,11 @@ service BookDir {
 			body: "*"
 		};
 	};
-}
+};
 
 message BookList {
 	repeated Book books = 1;
-}
+};
 
 message Book {
 	string ISBN = 1;
@@ -35,7 +35,7 @@ message Book {
 	string Category = 8;
 	bool PDF = 9;
 	bool Owned = 10;
-}
+};
 
 message Author {
 	string FirstName = 1;
@@ -44,14 +44,13 @@ message Author {
 	uint32 YearBorn = 4;
 	uint32 YearDied = 5;
 	uint32 BooksWritten = 6;
-}
+};
 
 message Publisher {
 	string Name = 1;
 	uint32 YearStarted = 2;
 	uint32 YearEnded = 3;
 	uint32 BooksPublished = 4;
-}
+};
 
-message NoArguments {
-}
+message Empty {};
