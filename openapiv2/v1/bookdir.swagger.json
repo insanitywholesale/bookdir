@@ -1,0 +1,201 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "v1/bookdir.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "BookDirService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/book": {
+      "post": {
+        "operationId": "BookDirService_AddBook",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1BookList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Book"
+            }
+          }
+        ],
+        "tags": [
+          "BookDirService"
+        ]
+      }
+    },
+    "/api/v1/books": {
+      "get": {
+        "operationId": "BookDirService_GetAllBooks",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1BookList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "BookDirService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1Author": {
+      "type": "object",
+      "properties": {
+        "FirstName": {
+          "type": "string"
+        },
+        "MiddleName": {
+          "type": "string"
+        },
+        "LastName": {
+          "type": "string"
+        },
+        "YearBorn": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "YearDied": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "BooksWritten": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "v1Book": {
+      "type": "object",
+      "properties": {
+        "ISBN": {
+          "type": "string"
+        },
+        "Title": {
+          "type": "string"
+        },
+        "Author": {
+          "$ref": "#/definitions/v1Author"
+        },
+        "Year": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Edition": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Publisher": {
+          "$ref": "#/definitions/v1Publisher"
+        },
+        "Pages": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Category": {
+          "type": "string"
+        },
+        "PDF": {
+          "type": "boolean"
+        },
+        "Owned": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1BookList": {
+      "type": "object",
+      "properties": {
+        "books": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Book"
+          }
+        }
+      }
+    },
+    "v1Publisher": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "YearStarted": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "YearEnded": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "BooksPublished": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    }
+  }
+}

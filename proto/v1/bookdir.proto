@@ -3,9 +3,21 @@ syntax = "proto3";
 package bookdir.v1;
 option go_package = "gitlab.com/insanitywholesale/bookdir/proto/v1";
 
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
 service BookDirService {
-	rpc GetAllBooks(NoArguments) returns (BookList) {};
-	rpc AddBook(Book) returns (BookList) {};
+	rpc GetAllBooks(NoArguments) returns (BookList) {
+		option (google.api.http) = {
+			get: "/api/v1/books"
+		};
+	};
+	rpc AddBook(Book) returns (BookList) {
+		option (google.api.http) = {
+			post: "/api/v1/book"
+			body: "*"
+		};
+	};
 }
 
 message BookList {
