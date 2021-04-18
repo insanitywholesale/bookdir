@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package bookdir.v1;
+option go_package = "gitlab.com/insanitywholesale/bookdir/v1";
+
+service BookDirService {
+	rpc GetAllBooks(NoArguments) returns (BookList) {};
+	rpc AddBook(Book) returns (BookList) {};
+}
+
+message BookList {
+	repeated Book books = 1;
+}
+
+message Book {
+	string ISBN = 1;
+	string Title = 2;
+	Author Author = 3;
+	uint32 Year = 4;
+	uint32 Edition = 5;
+	Publisher Publisher = 6;
+	uint32 Pages = 7;
+	string Category = 8;
+	bool PDF = 9;
+	bool Owned = 10;
+}
+
+message Author {
+	string FirstName = 1;
+	string MiddleName = 2;
+	string LastName = 3;
+	uint32 YearBorn = 4;
+	uint32 YearDied = 5;
+	uint32 BooksWritten = 6;
+}
+
+message Publisher {
+	string Name = 1;
+	uint32 YearStarted = 2;
+	uint32 YearEnded = 3;
+	uint32 BooksPublished = 4;
+}
+
+message NoArguments {
+}
