@@ -14,122 +14,122 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// BookDirServiceClient is the client API for BookDirService service.
+// BookDirClient is the client API for BookDir service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type BookDirServiceClient interface {
+type BookDirClient interface {
 	GetAllBooks(ctx context.Context, in *NoArguments, opts ...grpc.CallOption) (*BookList, error)
 	AddBook(ctx context.Context, in *Book, opts ...grpc.CallOption) (*BookList, error)
 }
 
-type bookDirServiceClient struct {
+type bookDirClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewBookDirServiceClient(cc grpc.ClientConnInterface) BookDirServiceClient {
-	return &bookDirServiceClient{cc}
+func NewBookDirClient(cc grpc.ClientConnInterface) BookDirClient {
+	return &bookDirClient{cc}
 }
 
-func (c *bookDirServiceClient) GetAllBooks(ctx context.Context, in *NoArguments, opts ...grpc.CallOption) (*BookList, error) {
+func (c *bookDirClient) GetAllBooks(ctx context.Context, in *NoArguments, opts ...grpc.CallOption) (*BookList, error) {
 	out := new(BookList)
-	err := c.cc.Invoke(ctx, "/bookdir.v1.BookDirService/GetAllBooks", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/bookdir.v1.BookDir/GetAllBooks", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *bookDirServiceClient) AddBook(ctx context.Context, in *Book, opts ...grpc.CallOption) (*BookList, error) {
+func (c *bookDirClient) AddBook(ctx context.Context, in *Book, opts ...grpc.CallOption) (*BookList, error) {
 	out := new(BookList)
-	err := c.cc.Invoke(ctx, "/bookdir.v1.BookDirService/AddBook", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/bookdir.v1.BookDir/AddBook", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// BookDirServiceServer is the server API for BookDirService service.
-// All implementations must embed UnimplementedBookDirServiceServer
+// BookDirServer is the server API for BookDir service.
+// All implementations must embed UnimplementedBookDirServer
 // for forward compatibility
-type BookDirServiceServer interface {
+type BookDirServer interface {
 	GetAllBooks(context.Context, *NoArguments) (*BookList, error)
 	AddBook(context.Context, *Book) (*BookList, error)
-	mustEmbedUnimplementedBookDirServiceServer()
+	mustEmbedUnimplementedBookDirServer()
 }
 
-// UnimplementedBookDirServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedBookDirServiceServer struct {
+// UnimplementedBookDirServer must be embedded to have forward compatible implementations.
+type UnimplementedBookDirServer struct {
 }
 
-func (UnimplementedBookDirServiceServer) GetAllBooks(context.Context, *NoArguments) (*BookList, error) {
+func (UnimplementedBookDirServer) GetAllBooks(context.Context, *NoArguments) (*BookList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllBooks not implemented")
 }
-func (UnimplementedBookDirServiceServer) AddBook(context.Context, *Book) (*BookList, error) {
+func (UnimplementedBookDirServer) AddBook(context.Context, *Book) (*BookList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddBook not implemented")
 }
-func (UnimplementedBookDirServiceServer) mustEmbedUnimplementedBookDirServiceServer() {}
+func (UnimplementedBookDirServer) mustEmbedUnimplementedBookDirServer() {}
 
-// UnsafeBookDirServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to BookDirServiceServer will
+// UnsafeBookDirServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to BookDirServer will
 // result in compilation errors.
-type UnsafeBookDirServiceServer interface {
-	mustEmbedUnimplementedBookDirServiceServer()
+type UnsafeBookDirServer interface {
+	mustEmbedUnimplementedBookDirServer()
 }
 
-func RegisterBookDirServiceServer(s grpc.ServiceRegistrar, srv BookDirServiceServer) {
-	s.RegisterService(&BookDirService_ServiceDesc, srv)
+func RegisterBookDirServer(s grpc.ServiceRegistrar, srv BookDirServer) {
+	s.RegisterService(&BookDir_ServiceDesc, srv)
 }
 
-func _BookDirService_GetAllBooks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _BookDir_GetAllBooks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NoArguments)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BookDirServiceServer).GetAllBooks(ctx, in)
+		return srv.(BookDirServer).GetAllBooks(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/bookdir.v1.BookDirService/GetAllBooks",
+		FullMethod: "/bookdir.v1.BookDir/GetAllBooks",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookDirServiceServer).GetAllBooks(ctx, req.(*NoArguments))
+		return srv.(BookDirServer).GetAllBooks(ctx, req.(*NoArguments))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _BookDirService_AddBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _BookDir_AddBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Book)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BookDirServiceServer).AddBook(ctx, in)
+		return srv.(BookDirServer).AddBook(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/bookdir.v1.BookDirService/AddBook",
+		FullMethod: "/bookdir.v1.BookDir/AddBook",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookDirServiceServer).AddBook(ctx, req.(*Book))
+		return srv.(BookDirServer).AddBook(ctx, req.(*Book))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// BookDirService_ServiceDesc is the grpc.ServiceDesc for BookDirService service.
+// BookDir_ServiceDesc is the grpc.ServiceDesc for BookDir service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var BookDirService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "bookdir.v1.BookDirService",
-	HandlerType: (*BookDirServiceServer)(nil),
+var BookDir_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "bookdir.v1.BookDir",
+	HandlerType: (*BookDirServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetAllBooks",
-			Handler:    _BookDirService_GetAllBooks_Handler,
+			Handler:    _BookDir_GetAllBooks_Handler,
 		},
 		{
 			MethodName: "AddBook",
-			Handler:    _BookDirService_AddBook_Handler,
+			Handler:    _BookDir_AddBook_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

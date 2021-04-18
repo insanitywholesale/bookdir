@@ -6,7 +6,7 @@
   },
   "tags": [
     {
-      "name": "BookDirService"
+      "name": "BookDir"
     }
   ],
   "consumes": [
@@ -18,7 +18,7 @@
   "paths": {
     "/api/v1/book": {
       "post": {
-        "operationId": "BookDirService_AddBook",
+        "operationId": "BookDir_AddBook",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -44,13 +44,13 @@
           }
         ],
         "tags": [
-          "BookDirService"
+          "BookDir"
         ]
       }
     },
     "/api/v1/books": {
       "get": {
-        "operationId": "BookDirService_GetAllBooks",
+        "operationId": "BookDir_GetAllBooks",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -66,7 +66,7 @@
           }
         },
         "tags": [
-          "BookDirService"
+          "BookDir"
         ]
       }
     }
