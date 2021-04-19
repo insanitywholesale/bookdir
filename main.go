@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	api "gitlab.com/insanitywholesale/bookdir/grpc"
-	"gitlab.com/insanitywholesale/bookdir/rest"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
+	"gitlab.com/insanitywholesale/bookdir/rest"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"

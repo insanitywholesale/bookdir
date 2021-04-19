@@ -1,10 +1,10 @@
 package rest
 
 import (
-	"google.golang.org/grpc"
-	gw "gitlab.com/insanitywholesale/bookdir/proto/v1"
 	"context"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	gw "gitlab.com/insanitywholesale/bookdir/proto/v1"
+	"google.golang.org/grpc"
 	"net/http"
 )
 
@@ -14,17 +14,17 @@ func RunGateway() error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-/*
-	conn, err := grpc.DialContext(
-		context.Background(),
-		addr,
-		grpc.WithInsecure(),
-		grpc.WithBlock(),
-	)
-	if err != nil {
-		return fmt.Errorf("failed to dial server: %w", err)
-	}
-*/
+	/*
+		conn, err := grpc.DialContext(
+			context.Background(),
+			addr,
+			grpc.WithInsecure(),
+			grpc.WithBlock(),
+		)
+		if err != nil {
+			return fmt.Errorf("failed to dial server: %w", err)
+		}
+	*/
 
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
