@@ -11,36 +11,36 @@ type Server struct {
 	pb.UnimplementedBookDirServer
 }
 
-var testbook = &pb.Book {
-	ISBN: "1234",
+var testbook = &pb.Book{
+	ISBN:  "1234",
 	Title: "hey",
 	Author: &pb.Author{
-		FirstName: "me",
-		MiddleName: "notme",
-		LastName: "notyou",
-		YearBorn: 1234,
-		YearDied: 7890,
+		FirstName:    "me",
+		MiddleName:   "notme",
+		LastName:     "notyou",
+		YearBorn:     1234,
+		YearDied:     7890,
 		BooksWritten: 2,
 	},
-	Year: 1999,
+	Year:    1999,
 	Edition: 1,
 	Publisher: &pb.Publisher{
-		Name: "urmom",
-		YearStarted: 1237,
-		YearEnded: 2077,
+		Name:           "urmom",
+		YearStarted:    1237,
+		YearEnded:      2077,
 		BooksPublished: 9000,
 	},
-	Pages: 100,
+	Pages:    100,
 	Category: "tech",
-	PDF: true,
-	Owned: false,
+	PDF:      true,
+	Owned:    false,
 }
 
-var testbooks = []*pb.Book {
+var testbooks = []*pb.Book{
 	testbook,
 }
 
-var testbooklist = &pb.BookList {
+var testbooklist = &pb.BookList{
 	Books: testbooks,
 }
 
