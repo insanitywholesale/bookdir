@@ -1,16 +1,8 @@
-package grpc
+package mock
 
 import (
-	"context"
-	"fmt"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
-	//"gitlab.com/insanitywholesale/bookdir/repo/postgres"
 )
-
-type Server struct {
-	// needed for forward compat for some reason
-	pb.UnimplementedBookDirServer
-}
 
 var testbook = &pb.Book{
 	ISBN:  "1234",
@@ -45,17 +37,4 @@ var testbooklist = &pb.BookList{
 	Books: testbooks,
 }
 
-func (Server) GetAllBooks(_ context.Context, _ *pb.Empty) (*pb.BookList, error) {
-	fmt.Println("getallbooks")
-	for _, b := range testbooks {
-		fmt.Println(b)
-	}
-	return testbooklist, nil
-}
-
-func (Server) AddBook(_ context.Context, book *pb.Book) (*pb.BookList, error) {
-	fmt.Println("addbook")
-	fmt.Println(book)
-	testbooks = append(testbooks, book)
-	return testbooklist, nil
-}
+//TODO: Implement same methods as postgres

@@ -8,29 +8,16 @@ import (
 	"net/http"
 )
 
-//TODO: implement
-func RunGateway() error {
+func RunGateway(grpcport string, restport string) error {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	/*
-		conn, err := grpc.DialContext(
-			context.Background(),
-			addr,
-			grpc.WithInsecure(),
-			grpc.WithBlock(),
-		)
-		if err != nil {
-			return fmt.Errorf("failed to dial server: %w", err)
-		}
-	*/
-
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	err := gw.RegisterBookDirHandlerFromEndpoint(ctx, mux, ":11000", opts)
+	err := gw.RegisterBookDirHandlerFromEndpoint(ctx, mux, ":"+grpcport, opts)
 	if err != nil {
 		return err
 	}
-	return http.ListenAndServe(":8081", mux)
+	return http.ListenAndServe(":"+restport, mux)
 }

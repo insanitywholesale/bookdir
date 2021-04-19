@@ -21,13 +21,13 @@ func getServiceName() string {
 func main() {
 	// shitpost
 	fmt.Println(getServiceName())
-	// set up port
-	port := os.Getenv("BOOKDIR_PORT")
-	if port == "" {
-		port = "11000"
+	// set up grpc port
+	grpcport := os.Getenv("BOOKDIR_GRPC_PORT")
+	if grpcport == "" {
+		grpcport = "11001"
 	}
 	// grpc server
-	listener, err := net.Listen("tcp", ":"+port)
+	listener, err := net.Listen("tcp", ":"+grpcport)
 	if err != nil {
 		log.Fatalf("listen failed %v", err)
 	}
@@ -35,5 +35,11 @@ func main() {
 	pb.RegisterBookDirServer(grpcServer, api.Server{})
 	reflection.Register(grpcServer)
 	go grpcServer.Serve(listener)
-	rest.RunGateway()
+
+	// set up grpc port
+	restport := os.Getenv("BOOKDIR_REST_PORT")
+	if restport == "" {
+		restport = "8081"
+	}
+	rest.RunGateway(grpcport, restport)
 }

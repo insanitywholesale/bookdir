@@ -1,0 +1,27 @@
+{
+  "books": [
+    {
+      "ISBN": "1234",
+      "Title": "hey",
+      "Author": {
+        "FirstName": "me",
+        "MiddleName": "notme",
+        "LastName": "notyou",
+        "YearBorn": 1234,
+        "YearDied": 7890,
+        "BooksWritten": 2
+      },
+      "Year": 1999,
+      "Edition": 1,
+      "Publisher": {
+        "Name": "urmom",
+        "YearStarted": 1237,
+        "YearEnded": 2077,
+        "BooksPublished": 9001
+      },
+      "Pages": 100,
+      "Category": "tech",
+      "PDF": true
+    }
+  ]
+}
