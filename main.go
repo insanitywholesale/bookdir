@@ -24,7 +24,7 @@ func main() {
 	// set up grpc port
 	grpcport := os.Getenv("BOOKDIR_GRPC_PORT")
 	if grpcport == "" {
-		grpcport = "11001"
+		grpcport = "11000"
 	}
 	// grpc server
 	listener, err := net.Listen("tcp", ":"+grpcport)
@@ -39,7 +39,7 @@ func main() {
 	// set up grpc port
 	restport := os.Getenv("BOOKDIR_REST_PORT")
 	if restport == "" {
-		restport = "8081"
+		restport = "8080"
 	}
 	rest.RunGateway(grpcport, restport)
 }
