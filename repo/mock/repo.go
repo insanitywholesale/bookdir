@@ -29,7 +29,9 @@ var testbook = &pb.Book{
 	Owned:    false,
 }
 
-var testbooks = []*pb.Book{
+type bookrepo []*pb.Book
+
+var testbooks bookrepo = []*pb.Book{
 	testbook,
 }
 
@@ -37,4 +39,20 @@ var testbooklist = &pb.BookList{
 	Books: testbooks,
 }
 
-//TODO: Implement same methods as postgres
+func NewBookRepo() (bookrepo, error) {
+	return testbooks, nil
+}
+
+func (br *bookrepo) Retrieve(isbn string) (*pb.Book, error) {
+	for _, b := range testbooks {
+		if isbn == b.ISBN {
+			return b, nil
+		}
+	}
+	return nil, errors.New("no book with ISBN" + isbn + "was found")
+}
+
+func (br *bookrepo) Save(book *pb.Book) error {
+	testbooks = append(testbooks, book)
+	return nil
+}
