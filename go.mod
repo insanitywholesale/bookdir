@@ -5,6 +5,8 @@ module gitlab.com/insanitywholesale/bookdir
 go 1.13
 
 require (
+	github.com/golang/protobuf v1.5.2
+	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.3.0
 	github.com/lib/pq v1.10.0
 	golang.org/x/net v0.0.0-20210415231046-e915ea6b2b7d // indirect

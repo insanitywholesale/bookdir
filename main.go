@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	api "gitlab.com/insanitywholesale/bookdir/grpc"
+	"gitlab.com/insanitywholesale/bookdir/rest"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -23,7 +24,7 @@ func main() {
 	// set up port
 	port := os.Getenv("BOOKDIR_PORT")
 	if port == "" {
-		port = "8080"
+		port = "11000"
 	}
 	// grpc server
 	listener, err := net.Listen("tcp", ":"+port)
@@ -33,5 +34,6 @@ func main() {
 	grpcServer := grpc.NewServer()
 	pb.RegisterBookDirServer(grpcServer, api.Server{})
 	reflection.Register(grpcServer)
-	grpcServer.Serve(listener)
+	go grpcServer.Serve(listener)
+	rest.RunGateway()
 }

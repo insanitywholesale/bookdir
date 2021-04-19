@@ -19,4 +19,7 @@ protosplus:
     --go_out=. --go_opt=module=gitlab.com/insanitywholesale/bookdir \
     --go-grpc_out=. --go-grpc_opt=module=gitlab.com/insanitywholesale/bookdir \
     --openapiv2_out=./openapiv2 --openapiv2_opt logtostderr=true \
-    proto/v1/*.proto
+    --grpc-gateway_out ./proto \
+    --grpc-gateway_opt logtostderr=true \
+    --grpc-gateway_opt paths=source_relative \
+	proto/v1/*.proto
