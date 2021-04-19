@@ -3,7 +3,7 @@ package postgres
 import (
 	"database/sql"
 	_ "github.com/lib/pq"
-	pb "gitlab.com/insanitywholesale/bookdir"
+	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
 )
 
 type postgresRepo struct {
@@ -27,7 +27,7 @@ func newPostgresClient(url string) (*sql.DB, error) {
 	return client, nil
 }
 
-func NewPostgresRepo(url string) (postgresRepo, error) {
+func NewPostgresRepo(url string) (*postgresRepo, error) {
 	repo := &postgresRepo{
 		pgURL: url,
 	}
