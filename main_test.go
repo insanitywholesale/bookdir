@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	api "gitlab.com/insanitywholesale/bookdir/grpc"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/test/bufconn"
@@ -26,7 +27,7 @@ func TestGetAllBooks(t *testing.T) {
 	var l *bufconn.Listener
 	l = bufconn.Listen(bufsize)
 	s := grpc.NewServer()
-	pb.RegisterBookDirServer(s, Server{})
+	pb.RegisterBookDirServer(s, api.Server{})
 	go func() {
 		err := s.Serve(l)
 		if err != nil {
