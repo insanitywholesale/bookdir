@@ -21,11 +21,13 @@ func getServiceName() string {
 func main() {
 	// shitpost
 	fmt.Println(getServiceName())
+
 	// set up grpc port
 	grpcport := os.Getenv("BOOKDIR_GRPC_PORT")
 	if grpcport == "" {
 		grpcport = "11000"
 	}
+
 	// grpc server
 	listener, err := net.Listen("tcp", ":"+grpcport)
 	if err != nil {
