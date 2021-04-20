@@ -1,10 +1,12 @@
 package grpc
 
 import (
+	"log"
 	"context"
 	"fmt"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
-	//"gitlab.com/insanitywholesale/bookdir/repo/postgres"
+	"gitlab.com/insanitywholesale/bookdir/repo/postgres"
+	repointerface "gitlab.com/insanitywholesale/bookdir/repo/interface"
 )
 
 type Server struct {
@@ -43,6 +45,18 @@ var testbooks = []*pb.Book{
 
 var testbooklist = &pb.BookList{
 	Books: testbooks,
+}
+
+var dbstore repointerface.BookDirRepo
+
+func init() {
+	pgURL := "postgres://tester:Apasswd@localhost?sslmode=disable"
+	repo, err := postgres.NewPostgresRepo(pgURL)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	dbstore = repo
 }
 
 func (Server) GetAllBooks(_ context.Context, _ *pb.Empty) (*pb.BookList, error) {
