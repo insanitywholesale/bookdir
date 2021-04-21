@@ -1,12 +1,12 @@
 package postgres
 
 var createBookTableQuery = `CREATE TABLE if not exists Book (
-	ISBN VARCHAR(13),
-	PRIMARY KEY (ISBN),
+	ISBN VARCHAR(13) PRIMARY KEY,
 	Title VARCHAR(100),
-	--CONSTRAINT FK_Author FOREIGN KEY (FirstName, MiddleName, LastName) REFERENCES Author(FirstName, MiddleName, LastName),
+	Author SERIAL REFERENCES Author(AuthorID),
 	Year INTEGER,
 	Edition INTEGER,
+	Publisher SERIAL REFERENCES Publisher(PublisherID),
 	Pages INTEGER,
 	Category VARCHAR(20),
 	PDF BOOLEAN,
@@ -14,16 +14,17 @@ var createBookTableQuery = `CREATE TABLE if not exists Book (
 );`
 
 var createAuthorTableQuery = `CREATE TABLE if not exists Author (
+	AuthorID SERIAL PRIMARY KEY,
 	FirstName VARCHAR(30),
 	MiddleName VARCHAR(30),
 	LastName VARCHAR(30),
-	--CONSTRAINT PK_Author PRIMARY KEY (FirstName, MiddleName, LastName),
 	YearBorn INTEGER,
 	YearDied INTEGER,
 	BooksWritten INTEGER
 );`
 
 var createPublisherTableQuery = `CREATE TABLE if not exists Publisher (
+	PublisherID SERIAL PRIMARY KEY,
 	Name VARCHAR(30),
 	YearStarted INTEGER,
 	YearEnded INTEGER,

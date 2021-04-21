@@ -105,6 +105,10 @@
     "v1Author": {
       "type": "object",
       "properties": {
+        "AuthorID": {
+          "type": "integer",
+          "format": "int64"
+        },
         "FirstName": {
           "type": "string"
         },
@@ -180,6 +184,10 @@
     "v1Publisher": {
       "type": "object",
       "properties": {
+        "PublisherID": {
+          "type": "integer",
+          "format": "int64"
+        },
         "Name": {
           "type": "string"
         },

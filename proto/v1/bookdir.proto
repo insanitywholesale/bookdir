@@ -38,19 +38,21 @@ message Book {
 };
 
 message Author {
-	string FirstName = 1;
-	string MiddleName = 2;
-	string LastName = 3;
-	uint32 YearBorn = 4;
-	uint32 YearDied = 5;
-	uint32 BooksWritten = 6;
+	uint32 AuthorID = 1;
+	string FirstName = 2;
+	string MiddleName = 3;
+	string LastName = 4;
+	uint32 YearBorn = 5;
+	uint32 YearDied = 6;
+	uint32 BooksWritten = 7;
 };
 
 message Publisher {
-	string Name = 1;
-	uint32 YearStarted = 2;
-	uint32 YearEnded = 3;
-	uint32 BooksPublished = 4;
+	uint32 PublisherID = 1;
+	string Name = 2;
+	uint32 YearStarted = 3;
+	uint32 YearEnded = 4;
+	uint32 BooksPublished = 5;
 };
 
 message Empty {};
