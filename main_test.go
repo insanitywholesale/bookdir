@@ -24,8 +24,7 @@ func TestGetServiceName(t *testing.T) {
 // Test gRPC
 func TestGetAllBooks(t *testing.T) {
 	const bufsize = 1024 * 1024
-	var l *bufconn.Listener
-	l = bufconn.Listen(bufsize)
+	l := bufconn.Listen(bufsize)
 	s := grpc.NewServer()
 	pb.RegisterBookDirServer(s, api.Server{})
 	go func() {
