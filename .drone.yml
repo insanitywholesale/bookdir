@@ -1,0 +1,21 @@
+kind: pipeline
+type: kubernetes
+name: default
+
+steps:
+- name: postgres
+  image: postgres:latest
+  environment:
+    POSTGRES_PASSWORD: Apasswd
+    POSTGRES_USER: tester
+  detach: true
+
+- name: bookdir
+  image: golang:1.16
+  environment:
+    PG_URL: postgres://tester:Apasswd@localhost?sslmode=disable
+  commands:
+  - go get -v
+  - go vet -v
+  - go build -v
+  - go test -v
