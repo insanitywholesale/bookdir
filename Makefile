@@ -1,6 +1,6 @@
 .PHONY: getprotodeps protos protosplus
 
-getprotodeps:
+getdeps:
 	which protoc
 	export GO111MODULE=on
 	go get -u -v google.golang.org/protobuf/cmd/protoc-gen-go
@@ -23,3 +23,7 @@ protosplus:
     --grpc-gateway_opt logtostderr=true \
     --grpc-gateway_opt paths=source_relative \
 	proto/v1/*.proto
+
+release:
+	go install -v github.com/goreleaser/goreleaser@latest
+	goreleaser --snapshot --skip-publish --rm-dist
