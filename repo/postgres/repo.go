@@ -20,6 +20,14 @@ func newPostgresClient(url string) (*sql.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+	_, err = client.Exec(createPublisherTableQuery)
+	if err != nil {
+		return nil, err
+	}
+	_, err = client.Exec(createAuthorTableQuery)
+	if err != nil {
+		return nil, err
+	}
 	_, err = client.Exec(createBookTableQuery)
 	if err != nil {
 		return nil, err
@@ -39,10 +47,52 @@ func NewPostgresRepo(url string) (*postgresRepo, error) {
 	return repo, nil
 }
 
+//TODO: implement fully, only returns one book now
+func (r *postgresRepo) RetrieveAll() ([]*pb.Book, error) {
+	var book *pb.Book
+	var bookList []*pb.Book
+	rows, err := r.client.Query(bookRetrieveAllQuery)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		err = rows.Scan(
+			book.ISBN,
+			book.Title,
+			book.Author,
+			book.Year,
+			book.Edition,
+			book.Pages,
+			book.Category,
+			book.PDF,
+			book.Owned,
+		)
+		if err != nil {
+			return nil, err
+		}
+		bookList = append(bookList, book)
+	}
+	if err != nil {
+		return nil, err
+	}
+	return bookList, nil
+}
+
 func (r *postgresRepo) Retrieve(isbn string) (*pb.Book, error) {
 	row := r.client.QueryRow(bookRetrievalQuery, isbn)
 	var book *pb.Book
-	err := row.Scan(book.ISBN, book.Title, book.Author, book.Year, book.Edition, book.Pages, book.Category, book.PDF, book.Owned)
+	err := row.Scan(
+		book.ISBN,
+		book.Title,
+		book.Author,
+		book.Year,
+		book.Edition,
+		book.Pages,
+		book.Category,
+		book.PDF,
+		book.Owned,
+	)
 	if err != nil {
 		return nil, err
 	}

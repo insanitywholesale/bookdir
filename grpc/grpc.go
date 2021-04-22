@@ -14,39 +14,6 @@ type Server struct {
 	pb.UnimplementedBookDirServer
 }
 
-var testbook = &pb.Book{
-	ISBN:  "1234",
-	Title: "hey",
-	Author: &pb.Author{
-		FirstName:    "me",
-		MiddleName:   "notme",
-		LastName:     "notyou",
-		YearBorn:     1234,
-		YearDied:     7890,
-		BooksWritten: 2,
-	},
-	Year:    1999,
-	Edition: 1,
-	Publisher: &pb.Publisher{
-		Name:           "urmom",
-		YearStarted:    1237,
-		YearEnded:      2077,
-		BooksPublished: 9001,
-	},
-	Pages:    100,
-	Category: "tech",
-	PDF:      true,
-	Owned:    false,
-}
-
-var testbooks = []*pb.Book{
-	testbook,
-}
-
-var testbooklist = &pb.BookList{
-	Books: testbooks,
-}
-
 var dbstore repointerface.BookDirRepo
 
 func init() {
@@ -61,15 +28,18 @@ func init() {
 
 func (Server) GetAllBooks(_ context.Context, _ *pb.Empty) (*pb.BookList, error) {
 	fmt.Println("getallbooks")
-	for _, b := range testbooks {
-		fmt.Println(b)
+	allbooks, err := dbstore.RetrieveAll()
+	if err != nil {
+		return nil, err
 	}
-	return testbooklist, nil
+	return &pb.BookList{Books: allbooks}, nil
 }
 
 func (Server) AddBook(_ context.Context, book *pb.Book) (*pb.BookList, error) {
 	fmt.Println("addbook")
+	/*
 	fmt.Println(book)
 	testbooks = append(testbooks, book)
-	return testbooklist, nil
+	*/
+	return &pb.BookList{}, nil
 }
