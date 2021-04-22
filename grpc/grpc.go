@@ -8,9 +8,9 @@ import (
 	repointerface "gitlab.com/insanitywholesale/bookdir/repo/interface"
 	"gitlab.com/insanitywholesale/bookdir/repo/mock"
 	"gitlab.com/insanitywholesale/bookdir/repo/postgres"
-	"regexp"
 	"log"
 	"os"
+	"regexp"
 )
 
 type Server struct {
