@@ -6,6 +6,27 @@ option go_package = "gitlab.com/insanitywholesale/bookdir/proto/v1";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: {
+        title: "BookDir";
+        version: "0.0.1";
+        contact: {
+            name: "inherently";
+            url: "https://git.distro.watch/inherently/bookdir";
+            email: "pepitsizous@zoho.com";
+        };
+        license: {
+            name: "AGPLv3";
+            url: "https://git.distro.watch/inherently/bookdir/src/branch/master/LICENSE";
+        };
+    };
+
+    schemes: HTTP;
+    schemes: HTTPS;
+    consumes: "application/json";
+    produces: "application/json";
+};
+
 service BookDir {
 	rpc GetAllBooks(Empty) returns (BookList) {
 		option (google.api.http) = {
@@ -19,7 +40,7 @@ service BookDir {
 	};
 	rpc AddBook(Book) returns (Empty) {
 		option (google.api.http) = {
-			post: "/api/v1/book/{ISBN}"
+			post: "/api/v1/book"
 			body: "*"
 		};
 	};

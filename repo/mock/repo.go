@@ -1,8 +1,8 @@
 package mock
 
 import (
-	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
 	"errors"
+	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
 )
 
 var testbook = &pb.Book{

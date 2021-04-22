@@ -1,13 +1,16 @@
 package grpc
 
 import (
-	_ "log"
 	"context"
+	"errors"
 	"fmt"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
-	_ "gitlab.com/insanitywholesale/bookdir/repo/postgres"
-	"gitlab.com/insanitywholesale/bookdir/repo/mock"
 	repointerface "gitlab.com/insanitywholesale/bookdir/repo/interface"
+	"gitlab.com/insanitywholesale/bookdir/repo/mock"
+	"gitlab.com/insanitywholesale/bookdir/repo/postgres"
+	"regexp"
+	"log"
+	"os"
 )
 
 type Server struct {
@@ -18,14 +21,17 @@ type Server struct {
 var dbstore repointerface.BookDirRepo
 
 func init() {
-	//pgURL := "postgres://tester:Apasswd@localhost?sslmode=disable"
-	//repo, err := postgres.NewPostgresRepo(pgURL)
-	//if err != nil {
-	//	log.Fatal(err)
-	//	return
-	//}
-	repo, _ := mock.NewMockRepo()
-	dbstore = repo
+	if os.Getenv("PG_URL") != "" {
+		pgURL := "postgres://tester:Apasswd@localhost?sslmode=disable"
+		repo, err := postgres.NewPostgresRepo(pgURL)
+		if err != nil {
+			log.Fatal(err)
+		}
+		dbstore = repo
+		return
+	}
+	dbstore, _ = mock.NewMockRepo()
+	return
 }
 
 func (Server) GetBookByISBN(_ context.Context, pbisbn *pb.ISBN) (*pb.Book, error) {
@@ -48,5 +54,40 @@ func (Server) GetAllBooks(_ context.Context, _ *pb.Empty) (*pb.BookList, error) 
 
 func (Server) AddBook(_ context.Context, book *pb.Book) (*pb.Empty, error) {
 	fmt.Println("addbook")
-	return &pb.Empty{}, nil
+	r := regexp.MustCompile("[^0-9]")
+	isbn := r.ReplaceAllString(book.ISBN, "")
+	isbnlen := len(isbn)
+	fmt.Println("isbnlen:", isbnlen)
+	if isbnlen != 13 && isbnlen != 10 {
+		return nil, errors.New("invalid ISBN length")
+	}
+
+	//TODO: add check if book with isbn exists
+
+	sum := 0
+	if isbnlen == 10 {
+		for i, v := range isbn {
+			sum += int(v) * (10 - i)
+		}
+		if sum%11 == 0 {
+			return &pb.Empty{}, nil
+		} else {
+			return nil, errors.New("invalid ISBN")
+		}
+	} else {
+		for i, v := range isbn {
+			tempadd := 0
+			if i%2 == 0 {
+				tempadd = 1
+			} else {
+				tempadd = 3
+			}
+			sum += int(v) * tempadd
+		}
+		if sum%10 == 0 {
+			return &pb.Empty{}, nil
+		} else {
+			return nil, errors.New("invalid ISBN")
+		}
+	}
 }

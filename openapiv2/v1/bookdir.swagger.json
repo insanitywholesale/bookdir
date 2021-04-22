@@ -1,13 +1,26 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "v1/bookdir.proto",
-    "version": "version not set"
+    "title": "BookDir",
+    "version": "0.0.1",
+    "contact": {
+      "name": "inherently",
+      "url": "https://git.distro.watch/inherently/bookdir",
+      "email": "pepitsizous@zoho.com"
+    },
+    "license": {
+      "name": "AGPLv3",
+      "url": "https://git.distro.watch/inherently/bookdir/src/branch/master/LICENSE"
+    }
   },
   "tags": [
     {
       "name": "BookDir"
     }
+  ],
+  "schemes": [
+    "http",
+    "https"
   ],
   "consumes": [
     "application/json"
@@ -16,6 +29,38 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/book": {
+      "post": {
+        "operationId": "BookDir_AddBook",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Empty"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Book"
+            }
+          }
+        ],
+        "tags": [
+          "BookDir"
+        ]
+      }
+    },
     "/api/v1/book/{ISBN}": {
       "get": {
         "operationId": "BookDir_GetBookByISBN",
@@ -39,42 +84,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          }
-        ],
-        "tags": [
-          "BookDir"
-        ]
-      },
-      "post": {
-        "operationId": "BookDir_AddBook",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Empty"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "ISBN",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1Book"
-            }
           }
         ],
         "tags": [
