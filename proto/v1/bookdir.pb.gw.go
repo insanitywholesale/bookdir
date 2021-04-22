@@ -51,6 +51,60 @@ func local_request_BookDir_GetAllBooks_0(ctx context.Context, marshaler runtime.
 
 }
 
+func request_BookDir_GetBookByISBN_0(ctx context.Context, marshaler runtime.Marshaler, client BookDirClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ISBN
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["ISBN"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "ISBN")
+	}
+
+	protoReq.ISBN, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "ISBN", err)
+	}
+
+	msg, err := client.GetBookByISBN(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_BookDir_GetBookByISBN_0(ctx context.Context, marshaler runtime.Marshaler, server BookDirServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ISBN
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["ISBN"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "ISBN")
+	}
+
+	protoReq.ISBN, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "ISBN", err)
+	}
+
+	msg, err := server.GetBookByISBN(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_BookDir_AddBook_0(ctx context.Context, marshaler runtime.Marshaler, client BookDirClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Book
 	var metadata runtime.ServerMetadata
@@ -61,6 +115,24 @@ func request_BookDir_AddBook_0(ctx context.Context, marshaler runtime.Marshaler,
 	}
 	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["ISBN"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "ISBN")
+	}
+
+	protoReq.ISBN, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "ISBN", err)
 	}
 
 	msg, err := client.AddBook(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -78,6 +150,24 @@ func local_request_BookDir_AddBook_0(ctx context.Context, marshaler runtime.Mars
 	}
 	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["ISBN"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "ISBN")
+	}
+
+	protoReq.ISBN, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "ISBN", err)
 	}
 
 	msg, err := server.AddBook(ctx, &protoReq)
@@ -111,6 +201,29 @@ func RegisterBookDirHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 		}
 
 		forward_BookDir_GetAllBooks_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_BookDir_GetBookByISBN_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_BookDir_GetBookByISBN_0(rctx, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_BookDir_GetBookByISBN_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -198,6 +311,26 @@ func RegisterBookDirHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 
 	})
 
+	mux.Handle("GET", pattern_BookDir_GetBookByISBN_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_BookDir_GetBookByISBN_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_BookDir_GetBookByISBN_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_BookDir_AddBook_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -224,11 +357,15 @@ func RegisterBookDirHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 var (
 	pattern_BookDir_GetAllBooks_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "books"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_BookDir_AddBook_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "book"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_BookDir_GetBookByISBN_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "book", "ISBN"}, "", runtime.AssumeColonVerbOpt(true)))
+
+	pattern_BookDir_AddBook_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "book", "ISBN"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
 	forward_BookDir_GetAllBooks_0 = runtime.ForwardResponseMessage
+
+	forward_BookDir_GetBookByISBN_0 = runtime.ForwardResponseMessage
 
 	forward_BookDir_AddBook_0 = runtime.ForwardResponseMessage
 )

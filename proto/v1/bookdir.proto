@@ -12,12 +12,21 @@ service BookDir {
 			get: "/api/v1/books"
 		};
 	};
-	rpc AddBook(Book) returns (BookList) {
+	rpc GetBookByISBN(ISBN) returns (Book) {
 		option (google.api.http) = {
-			post: "/api/v1/book"
+			get: "/api/v1/book/{ISBN}"
+		};
+	};
+	rpc AddBook(Book) returns (Empty) {
+		option (google.api.http) = {
+			post: "/api/v1/book/{ISBN}"
 			body: "*"
 		};
 	};
+};
+
+message ISBN {
+	string ISBN = 1;
 };
 
 message BookList {

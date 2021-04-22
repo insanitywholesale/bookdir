@@ -16,14 +16,14 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/book": {
-      "post": {
-        "operationId": "BookDir_AddBook",
+    "/api/v1/book/{ISBN}": {
+      "get": {
+        "operationId": "BookDir_GetBookByISBN",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1BookList"
+              "$ref": "#/definitions/v1Book"
             }
           },
           "default": {
@@ -34,6 +34,40 @@
           }
         },
         "parameters": [
+          {
+            "name": "ISBN",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "BookDir"
+        ]
+      },
+      "post": {
+        "operationId": "BookDir_AddBook",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Empty"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ISBN",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -180,6 +214,9 @@
           }
         }
       }
+    },
+    "v1Empty": {
+      "type": "object"
     },
     "v1Publisher": {
       "type": "object",

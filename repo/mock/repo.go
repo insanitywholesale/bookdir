@@ -2,6 +2,7 @@ package mock
 
 import (
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
+	"errors"
 )
 
 var testbook = &pb.Book{
@@ -39,11 +40,15 @@ var testbooklist = &pb.BookList{
 	Books: testbooks,
 }
 
-func NewBookRepo() (bookrepo, error) {
+func NewMockRepo() (bookrepo, error) {
 	return testbooks, nil
 }
 
-func (br *bookrepo) Retrieve(isbn string) (*pb.Book, error) {
+func (bookrepo) RetrieveAll() ([]*pb.Book, error) {
+	return testbooks, nil
+}
+
+func (bookrepo) Retrieve(isbn string) (*pb.Book, error) {
 	for _, b := range testbooks {
 		if isbn == b.ISBN {
 			return b, nil
@@ -52,7 +57,7 @@ func (br *bookrepo) Retrieve(isbn string) (*pb.Book, error) {
 	return nil, errors.New("no book with ISBN" + isbn + "was found")
 }
 
-func (br *bookrepo) Save(book *pb.Book) error {
+func (bookrepo) Save(book *pb.Book) error {
 	testbooks = append(testbooks, book)
 	return nil
 }

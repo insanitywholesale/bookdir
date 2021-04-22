@@ -28,7 +28,7 @@ func main() {
 		grpcport = "11000"
 	}
 
-	// grpc server
+	// set up grpc server
 	listener, err := net.Listen("tcp", ":"+grpcport)
 	if err != nil {
 		log.Fatalf("listen failed %v", err)
@@ -38,10 +38,10 @@ func main() {
 	reflection.Register(grpcServer)
 	go grpcServer.Serve(listener)
 
-	// set up grpc port
+	// set up rest port
 	restport := os.Getenv("BOOKDIR_REST_PORT")
 	if restport == "" {
 		restport = "8080"
 	}
-	rest.RunGateway(grpcport, restport)
+	log.Fatal(rest.RunGateway(grpcport, restport))
 }
