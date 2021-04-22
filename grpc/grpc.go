@@ -57,7 +57,6 @@ func (Server) AddBook(_ context.Context, book *pb.Book) (*pb.Empty, error) {
 	r := regexp.MustCompile("[^0-9]")
 	isbn := r.ReplaceAllString(book.ISBN, "")
 	isbnlen := len(isbn)
-	fmt.Println("isbnlen:", isbnlen)
 	if isbnlen != 13 && isbnlen != 10 {
 		return nil, errors.New("invalid ISBN length")
 	}
