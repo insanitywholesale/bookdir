@@ -69,6 +69,10 @@ func (Server) AddBook(_ context.Context, book *pb.Book) (*pb.Empty, error) {
 			sum += int(v) * (10 - i)
 		}
 		if sum%11 == 0 {
+			err := dbstore.Save(book)
+			if err != nil {
+				return nil, err
+			}
 			return &pb.Empty{}, nil
 		} else {
 			return nil, errors.New("invalid ISBN")
@@ -84,6 +88,10 @@ func (Server) AddBook(_ context.Context, book *pb.Book) (*pb.Empty, error) {
 			sum += int(v) * tempadd
 		}
 		if sum%10 == 0 {
+			err := dbstore.Save(book)
+			if err != nil {
+				return nil, err
+			}
 			return &pb.Empty{}, nil
 		} else {
 			return nil, errors.New("invalid ISBN")

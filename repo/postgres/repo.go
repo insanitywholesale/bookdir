@@ -36,18 +36,17 @@ func newPostgresClient(url string) (*sql.DB, error) {
 }
 
 func NewPostgresRepo(url string) (*postgresRepo, error) {
-	repo := &postgresRepo{
-		pgURL: url,
-	}
-	client, err := newPostgresClient(url)
+	pgclient, err := newPostgresClient(url)
 	if err != nil {
 		return nil, err
 	}
-	repo.client = client
+	repo := &postgresRepo{
+		pgURL: url,
+		client: pgclient,
+	}
 	return repo, nil
 }
 
-//TODO: implement fully, only returns one book now
 func (r *postgresRepo) RetrieveAll() ([]*pb.Book, error) {
 	var book *pb.Book
 	var bookList []*pb.Book
@@ -63,6 +62,7 @@ func (r *postgresRepo) RetrieveAll() ([]*pb.Book, error) {
 			book.Author,
 			book.Year,
 			book.Edition,
+			book.Publisher,
 			book.Pages,
 			book.Category,
 			book.PDF,
@@ -85,9 +85,9 @@ func (r *postgresRepo) Retrieve(isbn string) (*pb.Book, error) {
 	err := row.Scan(
 		book.ISBN,
 		book.Title,
-		book.Author,
 		book.Year,
 		book.Edition,
+		book.Publisher,
 		book.Pages,
 		book.Category,
 		book.PDF,
@@ -106,6 +106,7 @@ func (r *postgresRepo) Save(book *pb.Book) error {
 		book.Author,
 		book.Year,
 		book.Edition,
+		book.Publisher,
 		book.Pages,
 		book.Category,
 		book.PDF,
