@@ -85,3 +85,59 @@ func TestGetBookByISBN(t *testing.T) {
 	}
 	t.Log("response", res)
 }
+
+func TestAddBook(t *testing.T) {
+	const bufsize = 1024 * 1024
+	l := bufconn.Listen(bufsize)
+	s := grpc.NewServer()
+	pb.RegisterBookDirServer(s, api.Server{})
+	go func() {
+		err := s.Serve(l)
+		if err != nil {
+			t.Fatalf("server exited with error: %v", err)
+		}
+	}()
+
+	ctx := context.Background()
+	conn, err := grpc.DialContext(
+		ctx,
+		"bufnet",
+		grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) { return l.Dial() }),
+		grpc.WithInsecure(),
+	)
+	if err != nil {
+		t.Fatalf("failed to dial bufnet: %v", err)
+	}
+	defer conn.Close()
+
+	client := pb.NewBookDirClient(conn)
+
+	testbook := &pb.Book{
+		ISBN:  "9605122839",
+		Title: "hey",
+		Author: &pb.Author{
+			FirstName:    "me",
+			MiddleName:   "notme",
+			LastName:     "notyou",
+			YearBorn:     1234,
+			YearDied:     7890,
+			BooksWritten: 2,
+		},
+		Year:    1999,
+		Edition: 1,
+		Publisher: &pb.Publisher{
+			Name:           "urmom",
+			YearStarted:    1237,
+			YearEnded:      2077,
+			BooksPublished: 9001,
+		},
+		Pages:    100,
+		Category: "tech",
+		PDF:      true,
+		Owned:    false,
+	}
+	_, err = client.AddBook(ctx, testbook)
+	if err != nil {
+		t.Fatalf("failed to do some AddBook action %v", err)
+	}
+}
