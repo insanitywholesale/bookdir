@@ -27,12 +27,7 @@ func TestGetAllBooks(t *testing.T) {
 	l := bufconn.Listen(bufsize)
 	s := grpc.NewServer()
 	pb.RegisterBookDirServer(s, api.Server{})
-	go func() {
-		err := s.Serve(l)
-		if err != nil {
-			t.Fatalf("server exited with error: %v", err)
-		}
-	}()
+	go s.Serve(l)
 
 	ctx := context.Background()
 	conn, err := grpc.DialContext(
@@ -59,12 +54,7 @@ func TestGetBookByISBN(t *testing.T) {
 	l := bufconn.Listen(bufsize)
 	s := grpc.NewServer()
 	pb.RegisterBookDirServer(s, api.Server{})
-	go func() {
-		err := s.Serve(l)
-		if err != nil {
-			t.Fatalf("server exited with error: %v", err)
-		}
-	}()
+	go s.Serve(l)
 
 	ctx := context.Background()
 	conn, err := grpc.DialContext(
@@ -91,12 +81,7 @@ func TestAddBook(t *testing.T) {
 	l := bufconn.Listen(bufsize)
 	s := grpc.NewServer()
 	pb.RegisterBookDirServer(s, api.Server{})
-	go func() {
-		err := s.Serve(l)
-		if err != nil {
-			t.Fatalf("server exited with error: %v", err)
-		}
-	}()
+	go s.Serve(l)
 
 	ctx := context.Background()
 	conn, err := grpc.DialContext(
