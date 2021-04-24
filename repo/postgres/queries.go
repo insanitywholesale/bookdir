@@ -34,7 +34,24 @@ var createPublisherTableQuery = `CREATE TABLE if not exists Publisher (
 var bookRetrievalQuery = `SELECT * FROM Book WHERE ISBN=$1`
 var bookRetrieveAllQuery = `SELECT * FROM Book`
 
-var bookInsertQuery = `INSERT INTO Book (
+var authorInsertQuery = `INSERT INTO Author (
+	FirstName,
+	MiddleName,
+	LastName,
+	YearBorn,
+	YearDied,
+	BooksWritten
+) VALUES ($1, $2, $3, $4, $5, $6);`
+
+var authorInsertQuery = `INSERT INTO Publisher (
+	Name,
+	YearStarted,
+	YearEnded,
+	BooksPublished
+) VALUES ($1, $2, $3, $4);`
+
+var bookInsertQuery = `
+INSERT INTO Book (
 	ISBN,
 	Title,
 	Author,

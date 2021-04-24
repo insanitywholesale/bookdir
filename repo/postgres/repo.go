@@ -101,6 +101,20 @@ func (r *postgresRepo) Retrieve(isbn string) (*pb.Book, error) {
 }
 
 func (r *postgresRepo) Save(book *pb.Book) error {
+	_, err := r.client.Exec(authorInsertQuery,
+		book.Author.FirstName,
+		book.Author.MiddleName,
+		book.Author.LastName,
+		book.Author.YearBorn,
+		book.Author.YearDied,
+		book.Author.BooksWritten,
+	)
+	_, err := r.client.Exec(publisherInsertQuery,
+		book.Publisher.Name,
+		book.Publisher.YearStarted,
+		book.Publisher.YearEnded,
+		book.Publisher.BooksPublished,
+	)
 	_, err := r.client.Exec(bookInsertQuery,
 		book.ISBN,
 		book.Title,
