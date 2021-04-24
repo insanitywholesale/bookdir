@@ -85,6 +85,7 @@ func (r *postgresRepo) Retrieve(isbn string) (*pb.Book, error) {
 	err := row.Scan(
 		book.ISBN,
 		book.Title,
+		book.Author,
 		book.Year,
 		book.Edition,
 		book.Publisher,
