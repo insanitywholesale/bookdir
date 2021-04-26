@@ -2,4 +2,16 @@
 - implement server functions
 - add openapi docs to an http endpoint
 - use a list of authors instead of one author
-- add redis repo
+- list of repos to add
+    * redis
+    * mongodb
+    * scylladb
+    * cockroachdb
+    * couchdb
+    * rethinkdb
+    * etcd
+    * neo4j
+    * more postgres
+        - sqlc
+        - pgx
+        - sqldelight
