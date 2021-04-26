@@ -49,8 +49,14 @@ func NewPostgresRepo(url string) (*postgresRepo, error) {
 }
 
 func (r *postgresRepo) RetrieveAll() ([]*pb.Book, error) {
-	var book *pb.Book
+	var author = &pb.Author{}
+	var publisher = &pb.Publisher{}
+	var authID int
+	var pubID int
+
+	var book = &pb.Book{}
 	var bookList []*pb.Book
+
 	rows, err := r.client.Query(bookRetrieveAllQuery)
 	if err != nil {
 		return nil, err
@@ -58,20 +64,61 @@ func (r *postgresRepo) RetrieveAll() ([]*pb.Book, error) {
 	defer rows.Close()
 	for rows.Next() {
 		err = rows.Scan(
-			book.ISBN,
-			book.Title,
-			book.Author, //TODO: fix
-			book.Year,
-			book.Edition,
-			book.Publisher, //TODO: fix
-			book.Pages,
-			book.Category,
-			book.PDF,
-			book.Owned,
+			&book.ISBN,
+			&book.Title,
+			&author.AuthorID,
+			&book.Year,
+			&book.Edition,
+			&publisher.PublisherID,
+			&book.Pages,
+			&book.Category,
+			&book.PDF,
+			&book.Owned,
 		)
 		if err != nil {
 			return nil, err
 		}
+
+		isbn := book.ISBN
+
+		rowPublisherID := r.client.QueryRow(giveBookGetPublisherID, isbn)
+		err := rowPublisherID.Scan(&pubID)
+		if err != nil {
+			return nil, err
+		}
+		rowAuthorID := r.client.QueryRow(giveBookGetAuthorID, isbn)
+		err = rowAuthorID.Scan(&authID)
+		if err != nil {
+			return nil, err
+		}
+
+		rowAuthor := r.client.QueryRow(authorRetrievalQuery, authID)
+		err = rowAuthor.Scan(
+			&author.FirstName,
+			&author.MiddleName,
+			&author.LastName,
+			&author.YearBorn,
+			&author.YearDied,
+			&author.BooksWritten,
+		)
+		if err != nil {
+			return nil, err
+		}
+		rowPublisher := r.client.QueryRow(publisherRetrievalQuery, pubID)
+		err = rowPublisher.Scan(
+			&publisher.PublisherID,
+			&publisher.Name,
+			&publisher.YearStarted,
+			&publisher.YearEnded,
+			&publisher.BooksPublished,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		book.Author = author
+		book.Publisher = publisher
+
 		bookList = append(bookList, book)
 	}
 	if err != nil {
