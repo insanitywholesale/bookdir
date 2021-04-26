@@ -1,4 +1,4 @@
-.PHONY: getprotodeps protos protosplus
+.PHONY: getdeps protos protosplus
 
 getdeps:
 	which protoc
@@ -6,9 +6,11 @@ getdeps:
 	go get -u -v google.golang.org/protobuf/cmd/protoc-gen-go
 	go get -u -v google.golang.org/grpc/cmd/protoc-gen-go-grpc
 	go get -u -v github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
+	go get -u -v github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
 	go install -v google.golang.org/protobuf/cmd/protoc-gen-go
 	go install -v google.golang.org/grpc/cmd/protoc-gen-go-grpc
 	go install -v github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
+	go install -v github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
 
 protos:
 	protoc -I ./proto/ \

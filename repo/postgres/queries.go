@@ -3,10 +3,10 @@ package postgres
 var createBookTableQuery = `CREATE TABLE if not exists Book (
 	ISBN VARCHAR(13) PRIMARY KEY,
 	Title VARCHAR(100),
-	Author SERIAL REFERENCES Author(AuthorID),
+	AuthorID SERIAL REFERENCES Author(AuthorID),
 	Year INTEGER,
 	Edition INTEGER,
-	Publisher SERIAL REFERENCES Publisher(PublisherID),
+	PublisherID SERIAL REFERENCES Publisher(PublisherID),
 	Pages INTEGER,
 	Category VARCHAR(20),
 	PDF BOOLEAN,
@@ -41,25 +41,25 @@ var authorInsertQuery = `INSERT INTO Author (
 	YearBorn,
 	YearDied,
 	BooksWritten
-) VALUES ($1, $2, $3, $4, $5, $6);`
+) VALUES ($1, $2, $3, $4, $5, $6) RETURNING AuthorID;`
 
-var authorInsertQuery = `INSERT INTO Publisher (
+var publisherInsertQuery = `INSERT INTO Publisher (
 	Name,
 	YearStarted,
 	YearEnded,
 	BooksPublished
-) VALUES ($1, $2, $3, $4);`
+) VALUES ($1, $2, $3, $4) RETURNING PublisherID;`
 
 var bookInsertQuery = `
 INSERT INTO Book (
 	ISBN,
 	Title,
-	Author,
+	AuthorID,
 	Year,
 	Edition,
-	Publisher,
+	PublisherID,
 	Pages,
 	Category,
 	PDF,
 	Owned
-) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`
+) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`

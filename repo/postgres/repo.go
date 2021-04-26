@@ -3,7 +3,9 @@ package postgres
 import (
 	"database/sql"
 	_ "github.com/lib/pq"
+	_ "github.com/jackc/pgx/v4/stdlib"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
+	"log"
 )
 
 type postgresRepo struct {
@@ -20,11 +22,11 @@ func newPostgresClient(url string) (*sql.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	_, err = client.Exec(createPublisherTableQuery)
+	_, err = client.Exec(createAuthorTableQuery)
 	if err != nil {
 		return nil, err
 	}
-	_, err = client.Exec(createAuthorTableQuery)
+	_, err = client.Exec(createPublisherTableQuery)
 	if err != nil {
 		return nil, err
 	}
@@ -59,10 +61,10 @@ func (r *postgresRepo) RetrieveAll() ([]*pb.Book, error) {
 		err = rows.Scan(
 			book.ISBN,
 			book.Title,
-			book.Author,
+			book.Author,//TODO: fix
 			book.Year,
 			book.Edition,
-			book.Publisher,
+			book.Publisher,//TODO: fix
 			book.Pages,
 			book.Category,
 			book.PDF,
@@ -101,33 +103,49 @@ func (r *postgresRepo) Retrieve(isbn string) (*pb.Book, error) {
 }
 
 func (r *postgresRepo) Save(book *pb.Book) error {
-	_, err := r.client.Exec(authorInsertQuery,
+	log.Println("book", book)
+
+	var authorId int
+	errA := r.client.QueryRow(authorInsertQuery,
 		book.Author.FirstName,
 		book.Author.MiddleName,
 		book.Author.LastName,
 		book.Author.YearBorn,
 		book.Author.YearDied,
 		book.Author.BooksWritten,
-	)
-	_, err := r.client.Exec(publisherInsertQuery,
+	).Scan(&authorId)
+	if errA != nil {
+		log.Println("A1err", errA)
+		return errA
+	}
+
+	var publisherId int
+	errP := r.client.QueryRow(publisherInsertQuery,
 		book.Publisher.Name,
 		book.Publisher.YearStarted,
 		book.Publisher.YearEnded,
 		book.Publisher.BooksPublished,
-	)
-	_, err := r.client.Exec(bookInsertQuery,
+	).Scan(&publisherId)
+	if errP != nil {
+		log.Println("P1err", errP)
+		return errP
+	}
+
+	resBook, err := r.client.Exec(bookInsertQuery,
 		book.ISBN,
 		book.Title,
-		book.Author,
+		authorId,
 		book.Year,
 		book.Edition,
-		book.Publisher,
+		publisherId,
 		book.Pages,
 		book.Category,
 		book.PDF,
 		book.Owned,
 	)
+	log.Println(resBook)
 	if err != nil {
+		log.Println("Berr", err)
 		return err
 	}
 	return nil
