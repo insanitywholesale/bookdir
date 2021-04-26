@@ -19,5 +19,6 @@
   },
   "Pages": 100,
   "Category": "tech",
-  "PDF": true
+  "PDF": true,
+  "Owned": true
 }
