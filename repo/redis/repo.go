@@ -3,7 +3,7 @@ package redis
 import (
 	"fmt"
 	"github.com/go-redis/redis"
-	pb "gitlab.com/insanitywholesale/proto/v1"
+	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
 	"log"
 )
 

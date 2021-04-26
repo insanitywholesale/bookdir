@@ -1,17 +1,17 @@
-module gitlab.com/insanitywholesale/bookdir
+module bookdir
 
-//module bookdir
+go 1.16
 
-go 1.13
+replace gitlab.com/insanitywholesale/bookdir => ./
 
 require (
+	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/golang/protobuf v1.5.2
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.3.0
 	github.com/jackc/pgx/v4 v4.11.0
 	github.com/lib/pq v1.10.1
-	golang.org/x/net v0.0.0-20210421230115-4e50805a0758 // indirect
-	golang.org/x/sys v0.0.0-20210421221651-33663a62ff08 // indirect
+	gitlab.com/insanitywholesale/bookdir v0.0.0-00010101000000-000000000000
 	google.golang.org/genproto v0.0.0-20210423144448-3a41ef94ed2b
 	google.golang.org/grpc v1.37.0
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.1.0 // indirect
