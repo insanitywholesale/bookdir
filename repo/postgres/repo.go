@@ -2,8 +2,8 @@ package postgres
 
 import (
 	"database/sql"
-	_ "github.com/lib/pq"
 	_ "github.com/jackc/pgx/v4/stdlib"
+	_ "github.com/lib/pq"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
 	"log"
 )
@@ -43,7 +43,7 @@ func NewPostgresRepo(url string) (*postgresRepo, error) {
 		return nil, err
 	}
 	repo := &postgresRepo{
-		pgURL: url,
+		pgURL:  url,
 		client: pgclient,
 	}
 	return repo, nil
@@ -61,10 +61,10 @@ func (r *postgresRepo) RetrieveAll() ([]*pb.Book, error) {
 		err = rows.Scan(
 			book.ISBN,
 			book.Title,
-			book.Author,//TODO: fix
+			book.Author, //TODO: fix
 			book.Year,
 			book.Edition,
-			book.Publisher,//TODO: fix
+			book.Publisher, //TODO: fix
 			book.Pages,
 			book.Category,
 			book.PDF,
@@ -150,4 +150,3 @@ func (r *postgresRepo) Save(book *pb.Book) error {
 	}
 	return nil
 }
-
