@@ -31,7 +31,11 @@ var createPublisherTableQuery = `CREATE TABLE if not exists Publisher (
 	BooksPublished INTEGER
 );`
 
-var bookRetrievalQuery = `SELECT * FROM Book WHERE ISBN=$1`
+var bookRetrievalQuery = `SELECT * FROM Book WHERE ISBN=$1;`
+var authorRetrievalQuery = `SELECT FirstName, MiddleName, LastName, YearBorn, YearDied, BooksWritten
+FROM Author WHERE AuthorID=$1;`
+var publisherRetrievalQuery = `SELECT * FROM Publisher WHERE PublisherID=$1`
+
 var bookRetrieveAllQuery = `SELECT * FROM Book`
 
 var authorInsertQuery = `INSERT INTO Author (
@@ -63,3 +67,6 @@ INSERT INTO Book (
 	PDF,
 	Owned
 ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`
+
+var giveBookGetAuthorID = `SELECT AuthorID FROM Book WHERE ISBN=$1`
+var giveBookGetPublisherID = `SELECT PublisherID FROM Book WHERE ISBN=$1`

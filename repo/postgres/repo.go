@@ -82,23 +82,64 @@ func (r *postgresRepo) RetrieveAll() ([]*pb.Book, error) {
 }
 
 func (r *postgresRepo) Retrieve(isbn string) (*pb.Book, error) {
-	row := r.client.QueryRow(bookRetrievalQuery, isbn)
-	var book *pb.Book
-	err := row.Scan(
-		book.ISBN,
-		book.Title,
-		book.Author,
-		book.Year,
-		book.Edition,
-		book.Publisher,
-		book.Pages,
-		book.Category,
-		book.PDF,
-		book.Owned,
+	var author = &pb.Author{}
+	var publisher = &pb.Publisher{}
+	var authID int
+	var pubID int
+
+	rowPublisherID := r.client.QueryRow(giveBookGetPublisherID, isbn)
+	err := rowPublisherID.Scan(&pubID)
+	if err != nil {
+		return nil, err
+	}
+	rowAuthorID := r.client.QueryRow(giveBookGetAuthorID, isbn)
+	err = rowAuthorID.Scan(&authID)
+	if err != nil {
+		return nil, err
+	}
+
+	rowAuthor := r.client.QueryRow(authorRetrievalQuery, authID)
+	err = rowAuthor.Scan(
+		&author.FirstName,
+		&author.MiddleName,
+		&author.LastName,
+		&author.YearBorn,
+		&author.YearDied,
+		&author.BooksWritten,
 	)
 	if err != nil {
 		return nil, err
 	}
+	rowPublisher := r.client.QueryRow(publisherRetrievalQuery, pubID)
+	err = rowPublisher.Scan(
+		&publisher.PublisherID,
+		&publisher.Name,
+		&publisher.YearStarted,
+		&publisher.YearEnded,
+		&publisher.BooksPublished,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	var book = &pb.Book{Author: author, Publisher: publisher}
+	row := r.client.QueryRow(bookRetrievalQuery, isbn)
+	err = row.Scan(
+		&book.ISBN,
+		&book.Title,
+		&author.AuthorID,
+		&book.Year,
+		&book.Edition,
+		&publisher.PublisherID,
+		&book.Pages,
+		&book.Category,
+		&book.PDF,
+		&book.Owned,
+	)
+	if err != nil {
+		return nil, err
+	}
+
 	return book, nil
 }
 
