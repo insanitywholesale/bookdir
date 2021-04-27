@@ -6,7 +6,7 @@ import (
 )
 
 var testbook = &pb.Book{
-	ISBN:  "1234",
+	ISBN:  "9605122839",
 	Title: "hey",
 	Author: &pb.Author{
 		FirstName:    "me",
