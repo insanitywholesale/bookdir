@@ -11,5 +11,5 @@
     * etcd
     * neo4j
     * more postgres
-        - sqlc
-        - pgx
+        + sqlc
+        + pgx
