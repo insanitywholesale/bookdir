@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
-	repointerface "gitlab.com/insanitywholesale/bookdir/repo/interface"
+	"gitlab.com/insanitywholesale/bookdir/models"
 	"gitlab.com/insanitywholesale/bookdir/repo/mock"
 	"gitlab.com/insanitywholesale/bookdir/repo/postgres"
 	"gitlab.com/insanitywholesale/bookdir/repo/redis"
@@ -19,7 +19,7 @@ type Server struct {
 	pb.UnimplementedBookDirServer
 }
 
-var dbstore repointerface.BookDirRepo
+var dbstore models.BookDirRepo
 
 func init() {
 	if os.Getenv("PG_URL") != "" {

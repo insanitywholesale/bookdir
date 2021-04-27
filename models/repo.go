@@ -1,4 +1,4 @@
-package repointerface
+package bookdir
 
 import (
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
