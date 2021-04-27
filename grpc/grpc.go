@@ -8,6 +8,7 @@ import (
 	repointerface "gitlab.com/insanitywholesale/bookdir/repo/interface"
 	"gitlab.com/insanitywholesale/bookdir/repo/mock"
 	"gitlab.com/insanitywholesale/bookdir/repo/postgres"
+	"gitlab.com/insanitywholesale/bookdir/repo/redis"
 	"log"
 	"os"
 	"regexp"
@@ -22,10 +23,20 @@ var dbstore repointerface.BookDirRepo
 
 func init() {
 	if os.Getenv("PG_URL") != "" {
-		pgURL := "postgres://tester:Apasswd@localhost?sslmode=disable"
+		pgURL := os.Getenv("PG_URL")
 		repo, err := postgres.NewPostgresRepo(pgURL)
 		if err != nil {
 			log.Fatal(err)
+		}
+		dbstore = repo
+		return
+	}
+	if os.Getenv("REDIS_URL") != "" {
+		redisURL := os.Getenv("REDIS_URL")
+		repo, err := redis.NewRedisRepo(redisURL)
+		if err != nil {
+			log.Fatal(err)
+			return
 		}
 		dbstore = repo
 		return

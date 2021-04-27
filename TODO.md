@@ -3,7 +3,6 @@
 - add openapi docs to an http endpoint
 - use a list of authors instead of one author
 - list of repos to add
-    * redis
     * mongodb
     * scylladb
     * cockroachdb
@@ -14,4 +13,3 @@
     * more postgres
         - sqlc
         - pgx
-        - sqldelight
