@@ -3,6 +3,7 @@ package rest
 import (
 	"context"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/rs/cors"
 	gw "gitlab.com/insanitywholesale/bookdir/proto/v1"
 	"google.golang.org/grpc"
 	"net/http"
@@ -19,5 +20,6 @@ func RunGateway(grpcport string, restport string) error {
 	if err != nil {
 		return err
 	}
-	return http.ListenAndServe(":"+restport, mux)
+	handler := cors.Default().Handler(mux)
+	return http.ListenAndServe(":"+restport, handler)
 }

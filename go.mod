@@ -10,9 +10,10 @@ require (
 	github.com/lib/pq v1.10.1
 	github.com/onsi/ginkgo v1.7.0 // indirect
 	github.com/onsi/gomega v1.4.3 // indirect
+	github.com/rs/cors v1.7.0
 	golang.org/x/net v0.0.0-20210423184538-5f58ad60dda6 // indirect
-	golang.org/x/sys v0.0.0-20210426080607-c94f62235c83 // indirect
-	google.golang.org/genproto v0.0.0-20210423144448-3a41ef94ed2b
+	golang.org/x/sys v0.0.0-20210426230700-d19ff857e887 // indirect
+	google.golang.org/genproto v0.0.0-20210426193834-eac7f76ac494
 	google.golang.org/grpc v1.37.0
 	google.golang.org/protobuf v1.26.0
 )
