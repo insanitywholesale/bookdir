@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
 	"gitlab.com/insanitywholesale/bookdir/models"
+	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
 	"gitlab.com/insanitywholesale/bookdir/repo/mock"
 	"gitlab.com/insanitywholesale/bookdir/repo/postgres"
 	"gitlab.com/insanitywholesale/bookdir/repo/redis"
@@ -23,6 +23,7 @@ var dbstore models.BookDirRepo
 
 func init() {
 	if os.Getenv("PG_URL") != "" {
+		fmt.Println("postgres selected")
 		pgURL := os.Getenv("PG_URL")
 		repo, err := postgres.NewPostgresRepo(pgURL)
 		if err != nil {
@@ -32,6 +33,7 @@ func init() {
 		return
 	}
 	if os.Getenv("REDIS_URL") != "" {
+		fmt.Println("redis selected")
 		redisURL := os.Getenv("REDIS_URL")
 		repo, err := redis.NewRedisRepo(redisURL)
 		if err != nil {
@@ -46,7 +48,7 @@ func init() {
 }
 
 func (Server) GetBookByISBN(_ context.Context, pbisbn *pb.ISBN) (*pb.Book, error) {
-	fmt.Println("getbookbyisbn")
+	//fmt.Println("getbookbyisbn")
 	book, err := dbstore.Retrieve(pbisbn.ISBN)
 	if err != nil {
 		return nil, err
@@ -55,7 +57,7 @@ func (Server) GetBookByISBN(_ context.Context, pbisbn *pb.ISBN) (*pb.Book, error
 }
 
 func (Server) GetAllBooks(_ context.Context, _ *pb.Empty) (*pb.BookList, error) {
-	fmt.Println("getallbooks")
+	//fmt.Println("getallbooks")
 	allbooks, err := dbstore.RetrieveAll()
 	if err != nil {
 		return nil, err
@@ -64,7 +66,7 @@ func (Server) GetAllBooks(_ context.Context, _ *pb.Empty) (*pb.BookList, error) 
 }
 
 func (Server) AddBook(_ context.Context, book *pb.Book) (*pb.Empty, error) {
-	fmt.Println("addbook")
+	//fmt.Println("addbook")
 	r := regexp.MustCompile("[^0-9]")
 	isbn := r.ReplaceAllString(book.ISBN, "")
 	isbnlen := len(isbn)

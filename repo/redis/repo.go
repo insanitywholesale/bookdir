@@ -1,11 +1,11 @@
 package redis
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/go-redis/redis"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
-	"encoding/json"
-	"errors"
 )
 
 type redisRepo struct {
