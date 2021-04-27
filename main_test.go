@@ -49,33 +49,7 @@ func TestGetAllBooks(t *testing.T) {
 	t.Log("response", res)
 }
 
-func TestGetBookByISBN(t *testing.T) {
-	const bufsize = 1024 * 1024
-	l := bufconn.Listen(bufsize)
-	s := grpc.NewServer()
-	pb.RegisterBookDirServer(s, api.Server{})
-	go s.Serve(l)
-
-	ctx := context.Background()
-	conn, err := grpc.DialContext(
-		ctx,
-		"bufnet",
-		grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) { return l.Dial() }),
-		grpc.WithInsecure(),
-	)
-	if err != nil {
-		t.Fatalf("failed to dial bufnet: %v", err)
-	}
-	defer conn.Close()
-
-	client := pb.NewBookDirClient(conn)
-	res, err := client.GetBookByISBN(ctx, &pb.ISBN{ISBN: "1234"})
-	if err != nil {
-		t.Fatalf("failed to get GetBookByISBN response %v", err)
-	}
-	t.Log("response", res)
-}
-
+// Test adding a book
 func TestAddBook(t *testing.T) {
 	const bufsize = 1024 * 1024
 	l := bufconn.Listen(bufsize)
@@ -126,3 +100,32 @@ func TestAddBook(t *testing.T) {
 		t.Fatalf("failed to do some AddBook action %v", err)
 	}
 }
+
+// Test getting the previously added book by ISBN
+func TestGetBookByISBN(t *testing.T) {
+	const bufsize = 1024 * 1024
+	l := bufconn.Listen(bufsize)
+	s := grpc.NewServer()
+	pb.RegisterBookDirServer(s, api.Server{})
+	go s.Serve(l)
+
+	ctx := context.Background()
+	conn, err := grpc.DialContext(
+		ctx,
+		"bufnet",
+		grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) { return l.Dial() }),
+		grpc.WithInsecure(),
+	)
+	if err != nil {
+		t.Fatalf("failed to dial bufnet: %v", err)
+	}
+	defer conn.Close()
+
+	client := pb.NewBookDirClient(conn)
+	res, err := client.GetBookByISBN(ctx, &pb.ISBN{ISBN: "9605122839"})
+	if err != nil {
+		t.Fatalf("failed to get GetBookByISBN response %v", err)
+	}
+	t.Log("response", res)
+}
+

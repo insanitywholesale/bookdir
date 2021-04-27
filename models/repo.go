@@ -1,4 +1,4 @@
-package bookdir
+package models
 
 import (
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
