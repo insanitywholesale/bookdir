@@ -72,7 +72,7 @@ func TestAddBook(t *testing.T) {
 	client := pb.NewBookDirClient(conn)
 
 	testbook := &pb.Book{
-		ISBN:  "9605122839",
+		ISBN:  "0189219181",
 		Title: "hey",
 		Author: &pb.Author{
 			FirstName:    "me",
@@ -122,7 +122,7 @@ func TestGetBookByISBN(t *testing.T) {
 	defer conn.Close()
 
 	client := pb.NewBookDirClient(conn)
-	res, err := client.GetBookByISBN(ctx, &pb.ISBN{ISBN: "9605122839"})
+	res, err := client.GetBookByISBN(ctx, &pb.ISBN{ISBN: "0189219181"})
 	if err != nil {
 		t.Fatalf("failed to get GetBookByISBN response %v", err)
 	}
