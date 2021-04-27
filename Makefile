@@ -1,4 +1,4 @@
-.PHONY: getdeps protos protosplus
+.PHONY: getdeps protos protosplus gorelease
 
 getdeps:
 	which protoc
@@ -26,6 +26,6 @@ protosplus:
     --grpc-gateway_opt paths=source_relative \
 	proto/v1/*.proto
 
-release:
+gorelease:
 	go install -v github.com/goreleaser/goreleaser@latest
 	goreleaser --snapshot --skip-publish --rm-dist
