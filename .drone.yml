@@ -24,7 +24,7 @@ steps:
 - name: bookdir-redis
   image: golang:1.16
   environment:
-  - REDIS_URL: "localhost:6397"
+    REDIS_URL: "localhost:6397"
   commands:
   - go get -v
   - go vet -v
