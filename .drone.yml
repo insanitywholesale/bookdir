@@ -10,3 +10,34 @@ steps:
   - go vet -v
   - go build -v
   - go test -v
+
+- name: bookdir-postgres
+  image: golang:1.16
+  environment:
+    PG_URL: "postgres://tester:Apasswd@localhost?sslmode=disable"
+  commands:
+  - go get -v
+  - go vet -v
+  - go build -v
+  - go test -v
+
+- name: bookdir-redis
+  image: golang:1.16
+  environment:
+  - REDIS_URL: "localhost:6397"
+  commands:
+  - go get -v
+  - go vet -v
+  - go build -v
+  - go test -v
+
+
+services:
+- name: postgres-db
+  image: postgres:latest
+  environment:
+    POSTGRES_PASSWORD: Apasswd
+    POSTGRES_USER: tester
+
+- name: redis-db
+  image: redis:latest
