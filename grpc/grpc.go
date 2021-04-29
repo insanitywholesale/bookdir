@@ -44,6 +44,16 @@ func init() {
 	return
 }
 
+//TODO: implement
+func (Server) GetBooksByAuthor(_ context.Context, author *pb.Author) (*pb.BookList, error) {
+	return &pb.BookList{}, nil
+}
+
+//TODO: implement
+func (Server) GetAllAuthors(_ context.Context, _ *pb.Empty) (*pb.AuthorList, error) {
+	return &pb.AuthorList{}, nil
+}
+
 func (Server) GetBookByISBN(_ context.Context, pbisbn *pb.ISBN) (*pb.Book, error) {
 	book, err := dbstore.Retrieve(pbisbn.ISBN)
 	if err != nil {

@@ -33,6 +33,16 @@ service BookDir {
 			get: "/api/v1/books"
 		};
 	};
+	rpc GetAllAuthors(Empty) returns (AuthorList) {
+		option (google.api.http) = {
+			get: "/api/v1/books"
+		};
+	};
+	rpc GetBooksByAuthor(Author) returns (BookList) {
+		option (google.api.http) = {
+			get: "/api/v1/book/{AuthorID}"
+		};
+	};
 	rpc GetBookByISBN(ISBN) returns (Book) {
 		option (google.api.http) = {
 			get: "/api/v1/book/{ISBN}"
@@ -65,6 +75,10 @@ message Book {
 	string Category = 8;
 	bool PDF = 9;
 	bool Owned = 10;
+};
+
+message AuthorList {
+	repeated Author authors = 1;
 };
 
 message Author {

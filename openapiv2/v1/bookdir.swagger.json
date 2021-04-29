@@ -61,6 +61,76 @@
         ]
       }
     },
+    "/api/v1/book/{AuthorID}": {
+      "get": {
+        "operationId": "BookDir_GetBooksByAuthor",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1BookList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "AuthorID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "FirstName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "MiddleName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "LastName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "YearBorn",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "YearDied",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "BooksWritten",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "BookDir"
+        ]
+      }
+    },
     "/api/v1/book/{ISBN}": {
       "get": {
         "operationId": "BookDir_GetBookByISBN",
