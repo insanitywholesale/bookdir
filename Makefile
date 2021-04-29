@@ -1,4 +1,4 @@
-.PHONY: getdeps protos protosplus gorelease
+.PHONY: getdeps protos gorelease
 
 getdeps:
 	which protoc
@@ -13,10 +13,6 @@ getdeps:
 	go install -v github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
 
 protos:
-	protoc -I ./proto/ \
-	--go_out=. --go_opt=module=gitlab.com/insanitywholesale/bookdir --go-grpc_out=. --go-grpc_opt=module=gitlab.com/insanitywholesale/bookdir proto/v1/*.proto
-
-protosplus:
 	protoc -I ./proto/ -I third_party/googleapis -I third_party/grpc-gateway \
     --go_out=. --go_opt=module=gitlab.com/insanitywholesale/bookdir \
     --go-grpc_out=. --go-grpc_opt=module=gitlab.com/insanitywholesale/bookdir \
