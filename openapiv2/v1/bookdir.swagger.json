@@ -163,12 +163,12 @@
     },
     "/api/v1/books": {
       "get": {
-        "operationId": "BookDir_GetAllBooks",
+        "operationId": "BookDir_GetAllAuthors",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1BookList"
+              "$ref": "#/definitions/v1AuthorList"
             }
           },
           "default": {
@@ -242,6 +242,17 @@
         "BooksWritten": {
           "type": "integer",
           "format": "int64"
+        }
+      }
+    },
+    "v1AuthorList": {
+      "type": "object",
+      "properties": {
+        "authors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Author"
+          }
         }
       }
     },
