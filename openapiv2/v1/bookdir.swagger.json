@@ -29,6 +29,28 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/authors": {
+      "get": {
+        "operationId": "BookDir_GetAllAuthors",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AuthorList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "BookDir"
+        ]
+      }
+    },
     "/api/v1/book": {
       "post": {
         "operationId": "BookDir_AddBook",
@@ -163,12 +185,12 @@
     },
     "/api/v1/books": {
       "get": {
-        "operationId": "BookDir_GetAllAuthors",
+        "operationId": "BookDir_GetAllBooks",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1AuthorList"
+              "$ref": "#/definitions/v1BookList"
             }
           },
           "default": {

@@ -33,6 +33,28 @@ func (r *redisRepo) generateKey(code string) string {
 	return fmt.Sprintf("book:%s", code)
 }
 
+func (r *redisRepo) RetrieveAllAuthors() ([]*pb.Author, error) {
+	var authorlist []*pb.Author
+	keys, err := r.client.Do("KEYS", "book:*").Result()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, b := range keys.([]interface{}) {
+		book := &pb.Book{}
+		reply, err := r.client.Do("GET", b.(string)).Result()
+		if err != nil {
+			return nil, err
+		}
+		err = json.Unmarshal([]byte(reply.(string)), book)
+		if err != nil {
+			return nil, err
+		}
+		authorlist = append(authorlist, book.Author)
+	}
+	return authorlist, nil
+}
+
 func (r *redisRepo) RetrieveAll() ([]*pb.Book, error) {
 	var booklist []*pb.Book
 	keys, err := r.client.Do("KEYS", "book:*").Result()
@@ -46,6 +68,7 @@ func (r *redisRepo) RetrieveAll() ([]*pb.Book, error) {
 		if err != nil {
 			return nil, err
 		}
+		fmt.Println("reply", reply)
 		err = json.Unmarshal([]byte(reply.(string)), book)
 		if err != nil {
 			return nil, err

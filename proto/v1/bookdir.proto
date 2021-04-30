@@ -35,7 +35,7 @@ service BookDir {
 	};
 	rpc GetAllAuthors(Empty) returns (AuthorList) {
 		option (google.api.http) = {
-			get: "/api/v1/books"
+			get: "/api/v1/authors"
 		};
 	};
 	rpc GetBooksByAuthor(Author) returns (BookList) {

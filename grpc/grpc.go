@@ -51,7 +51,11 @@ func (Server) GetBooksByAuthor(_ context.Context, author *pb.Author) (*pb.BookLi
 
 //TODO: implement
 func (Server) GetAllAuthors(_ context.Context, _ *pb.Empty) (*pb.AuthorList, error) {
-	return &pb.AuthorList{}, nil
+	allauthors, err := dbstore.RetrieveAllAuthors()
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AuthorList{Authors: allauthors}, nil
 }
 
 func (Server) GetBookByISBN(_ context.Context, pbisbn *pb.ISBN) (*pb.Book, error) {
