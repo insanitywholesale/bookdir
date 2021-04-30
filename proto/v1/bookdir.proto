@@ -28,6 +28,16 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 };
 
 service BookDir {
+	rpc GetAllPublishers(Empty) returns (PublisherList) {
+		option (google.api.http) = {
+			get: "/api/v1/publishers"
+		};
+	};
+	rpc GetBooksByPublisher(Publisher) returns (BookList) {
+		option (google.api.http) = {
+			get: "/api/v1/publisher/{PublisherID}"
+		};
+	};
 	rpc GetAllAuthors(Empty) returns (AuthorList) {
 		option (google.api.http) = {
 			get: "/api/v1/authors"
@@ -35,7 +45,7 @@ service BookDir {
 	};
 	rpc GetBooksByAuthor(Author) returns (BookList) {
 		option (google.api.http) = {
-			get: "/api/v1/book/{AuthorID}"
+			get: "/api/v1/authors/{AuthorID}"
 		};
 	};
 	rpc GetAllBooks(Empty) returns (BookList) {
@@ -89,6 +99,10 @@ message Author {
 	uint32 YearBorn = 5;
 	uint32 YearDied = 6;
 	uint32 BooksWritten = 7;
+};
+
+message PublisherList {
+	repeated Publisher publishers = 1;
 };
 
 message Publisher {

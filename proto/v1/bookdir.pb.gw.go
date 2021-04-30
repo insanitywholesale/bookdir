@@ -33,6 +33,96 @@ var _ = utilities.NewDoubleArray
 var _ = descriptor.ForMessage
 var _ = metadata.Join
 
+func request_BookDir_GetAllPublishers_0(ctx context.Context, marshaler runtime.Marshaler, client BookDirClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Empty
+	var metadata runtime.ServerMetadata
+
+	msg, err := client.GetAllPublishers(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_BookDir_GetAllPublishers_0(ctx context.Context, marshaler runtime.Marshaler, server BookDirServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Empty
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.GetAllPublishers(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_BookDir_GetBooksByPublisher_0 = &utilities.DoubleArray{Encoding: map[string]int{"PublisherID": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
+func request_BookDir_GetBooksByPublisher_0(ctx context.Context, marshaler runtime.Marshaler, client BookDirClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Publisher
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["PublisherID"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "PublisherID")
+	}
+
+	protoReq.PublisherID, err = runtime.Uint32(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "PublisherID", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_BookDir_GetBooksByPublisher_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.GetBooksByPublisher(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_BookDir_GetBooksByPublisher_0(ctx context.Context, marshaler runtime.Marshaler, server BookDirServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Publisher
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["PublisherID"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "PublisherID")
+	}
+
+	protoReq.PublisherID, err = runtime.Uint32(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "PublisherID", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_BookDir_GetBooksByPublisher_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.GetBooksByPublisher(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_BookDir_GetAllAuthors_0(ctx context.Context, marshaler runtime.Marshaler, client BookDirClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Empty
 	var metadata runtime.ServerMetadata
@@ -235,6 +325,52 @@ func local_request_BookDir_AddBook_0(ctx context.Context, marshaler runtime.Mars
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterBookDirHandlerFromEndpoint instead.
 func RegisterBookDirHandlerServer(ctx context.Context, mux *runtime.ServeMux, server BookDirServer) error {
 
+	mux.Handle("GET", pattern_BookDir_GetAllPublishers_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_BookDir_GetAllPublishers_0(rctx, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_BookDir_GetAllPublishers_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_BookDir_GetBooksByPublisher_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_BookDir_GetBooksByPublisher_0(rctx, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_BookDir_GetBooksByPublisher_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("GET", pattern_BookDir_GetAllAuthors_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -391,6 +527,46 @@ func RegisterBookDirHandler(ctx context.Context, mux *runtime.ServeMux, conn *gr
 // "BookDirClient" to call the correct interceptors.
 func RegisterBookDirHandlerClient(ctx context.Context, mux *runtime.ServeMux, client BookDirClient) error {
 
+	mux.Handle("GET", pattern_BookDir_GetAllPublishers_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_BookDir_GetAllPublishers_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_BookDir_GetAllPublishers_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_BookDir_GetBooksByPublisher_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_BookDir_GetBooksByPublisher_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_BookDir_GetBooksByPublisher_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("GET", pattern_BookDir_GetAllAuthors_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -495,9 +671,13 @@ func RegisterBookDirHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 }
 
 var (
+	pattern_BookDir_GetAllPublishers_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "publishers"}, "", runtime.AssumeColonVerbOpt(true)))
+
+	pattern_BookDir_GetBooksByPublisher_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "publisher", "PublisherID"}, "", runtime.AssumeColonVerbOpt(true)))
+
 	pattern_BookDir_GetAllAuthors_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "authors"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_BookDir_GetBooksByAuthor_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "book", "AuthorID"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_BookDir_GetBooksByAuthor_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "authors", "AuthorID"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_BookDir_GetAllBooks_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "books"}, "", runtime.AssumeColonVerbOpt(true)))
 
@@ -507,6 +687,10 @@ var (
 )
 
 var (
+	forward_BookDir_GetAllPublishers_0 = runtime.ForwardResponseMessage
+
+	forward_BookDir_GetBooksByPublisher_0 = runtime.ForwardResponseMessage
+
 	forward_BookDir_GetAllAuthors_0 = runtime.ForwardResponseMessage
 
 	forward_BookDir_GetBooksByAuthor_0 = runtime.ForwardResponseMessage

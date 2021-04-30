@@ -51,39 +51,7 @@
         ]
       }
     },
-    "/api/v1/book": {
-      "post": {
-        "operationId": "BookDir_AddBook",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Empty"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1Book"
-            }
-          }
-        ],
-        "tags": [
-          "BookDir"
-        ]
-      }
-    },
-    "/api/v1/book/{AuthorID}": {
+    "/api/v1/authors/{AuthorID}": {
       "get": {
         "operationId": "BookDir_GetBooksByAuthor",
         "responses": {
@@ -153,6 +121,38 @@
         ]
       }
     },
+    "/api/v1/book": {
+      "post": {
+        "operationId": "BookDir_AddBook",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Empty"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Book"
+            }
+          }
+        ],
+        "tags": [
+          "BookDir"
+        ]
+      }
+    },
     "/api/v1/book/{ISBN}": {
       "get": {
         "operationId": "BookDir_GetBookByISBN",
@@ -191,6 +191,86 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1BookList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "BookDir"
+        ]
+      }
+    },
+    "/api/v1/publisher/{PublisherID}": {
+      "get": {
+        "operationId": "BookDir_GetBooksByPublisher",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1BookList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "PublisherID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "Name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "YearStarted",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "YearEnded",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "BooksPublished",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "BookDir"
+        ]
+      }
+    },
+    "/api/v1/publishers": {
+      "get": {
+        "operationId": "BookDir_GetAllPublishers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1PublisherList"
             }
           },
           "default": {
@@ -351,6 +431,17 @@
         "BooksPublished": {
           "type": "integer",
           "format": "int64"
+        }
+      }
+    },
+    "v1PublisherList": {
+      "type": "object",
+      "properties": {
+        "publishers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Publisher"
+          }
         }
       }
     }
