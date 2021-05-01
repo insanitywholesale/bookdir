@@ -10,7 +10,7 @@ type BookDirRepo interface {
 	RetrievePublisherById() (*pb.Publisher, error)
 
 	RetrieveAllAuthors() ([]*pb.Author, error)
-	RetrieveBooksByAuthor(authorId) ([]*pb.Book, error)
+	RetrieveBooksByAuthor(authorId string) ([]*pb.Book, error)
 	RetrieveAuthorById() (*pb.Author, error)
 
 	RetrieveAll() ([]*pb.Book, error)

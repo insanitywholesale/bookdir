@@ -1,0 +1,24 @@
+{
+  "ISBN": "0315220090",
+  "Title": "title",
+  "Author": {
+    "FirstName": "big",
+    "MiddleName": "boo",
+    "LastName": "ba",
+    "YearBorn": 69,
+    "YearDied": 420,
+    "BooksWritten": 9543
+  },
+  "Year": 1997,
+  "Edition": 8,
+  "Publisher": {
+    "Name": "plonk",
+    "YearStarted": 9207,
+    "YearEnded": 26077,
+    "BooksPublished": 999
+  },
+  "Pages": 1337,
+  "Category": "drama",
+  "PDF": false,
+  "Owned": false
+}

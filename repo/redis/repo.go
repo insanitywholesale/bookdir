@@ -74,6 +74,10 @@ func (r *redisRepo) Retrieve(isbn string) (*pb.Book, error) {
 
 func (r *redisRepo) Save(book *pb.Book) error {
 	key := r.generateKey(book.ISBN)
+	authId, err := r.client.Incr("AuthorID").Result()
+	book.Author.AuthorID = uint32(authId)
+	pubId, err := r.client.Incr("PublisherID").Result()
+	book.Publisher.PublisherID = uint32(pubId)
 	data, err := json.Marshal(book)
 	if err != nil {
 		return err
