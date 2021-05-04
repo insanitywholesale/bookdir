@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/go-redis/redis"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
-	"strconv"
 )
 
 type redisRepo struct {
