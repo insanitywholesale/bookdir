@@ -5,17 +5,17 @@ import (
 )
 
 type BookDirRepo interface {
-/*
-	//Publisher methods
-	RetrieveAllPublishers() ([]*pb.Publisher, error)
-	RetrieveBooksByPublisher(publisherId string) ([]*pb.Book, error)
-	RetrievePublisherById() (*pb.Publisher, error)
-*/
+	/*
+		//Publisher methods
+		RetrieveAllPublishers() ([]*pb.Publisher, error)
+		RetrieveBooksByPublisher(publisherId string) ([]*pb.Book, error)
+		RetrievePublisherById() (*pb.Publisher, error)
+	*/
 
 	//Author methods
 	RetrieveAllAuthors() ([]*pb.Author, error)
-	RetrieveBooksByAuthor(authorId string) ([]*pb.Book, error)
-	RetrieveAuthorById(authorId string) (*pb.Author, error)
+	RetrieveBooksByAuthor(authorId uint32) ([]*pb.Book, error)
+	RetrieveAuthorById(authorId uint32) (*pb.Author, error)
 
 	//Book methods
 	RetrieveAll() ([]*pb.Book, error)

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/go-redis/redis"
-	"strconv"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
+	"strconv"
 )
 
 type redisRepo struct {
@@ -57,7 +57,7 @@ func (r *redisRepo) RetrieveAllAuthors() ([]*pb.Author, error) {
 	return authorlist, nil
 }
 
-func (r *redisRepo) RetrieveBooksByAuthor(authorId string) ([]*pb.Book, error) {
+func (r *redisRepo) RetrieveBooksByAuthor(authorId uint32) ([]*pb.Book, error) {
 	var booklist []*pb.Book
 	keys, err := r.client.Do("KEYS", "book:*").Result()
 	if err != nil {
@@ -75,11 +75,7 @@ func (r *redisRepo) RetrieveBooksByAuthor(authorId string) ([]*pb.Book, error) {
 		if err != nil {
 			return nil, err
 		}
-		authoriduint, err := strconv.ParseUint(authorId, 10, 64)
-		if err != nil {
-			return nil, err
-		}
-		if book.Author.AuthorID == uint32(authoriduint) {
+		if book.Author.AuthorID == authorId {
 			booklist = append(booklist, book)
 		}
 	}
@@ -90,9 +86,28 @@ func (r *redisRepo) RetrieveBooksByAuthor(authorId string) ([]*pb.Book, error) {
 	}
 }
 
-func (r *redisRepo) RetrieveAuthorById(authorId string) (*pb.Author, error) {
-	var author *pb.Author
-	return author, nil
+func (r *redisRepo) RetrieveAuthorById(authorId uint32) (*pb.Author, error) {
+	keys, err := r.client.Do("KEYS", "book:*").Result()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, b := range keys.([]interface{}) {
+		book := &pb.Book{}
+		reply, err := r.client.Do("GET", b.(string)).Result()
+		if err != nil {
+			return nil, err
+		}
+		fmt.Println("reply", reply)
+		err = json.Unmarshal([]byte(reply.(string)), book)
+		if err != nil {
+			return nil, err
+		}
+		if book.Author.AuthorID == authorId {
+			return book.Author, nil
+		}
+	}
+	return nil, errors.New("author not found")
 }
 
 func (r *redisRepo) RetrieveAll() ([]*pb.Book, error) {

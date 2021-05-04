@@ -21,17 +21,17 @@ type Server struct {
 var dbstore models.BookDirRepo
 
 func init() {
-/*
-	if os.Getenv("PG_URL") != "" {
-		pgURL := os.Getenv("PG_URL")
-		repo, err := postgres.NewPostgresRepo(pgURL)
-		if err != nil {
-			log.Fatal(err)
+	/*
+		if os.Getenv("PG_URL") != "" {
+			pgURL := os.Getenv("PG_URL")
+			repo, err := postgres.NewPostgresRepo(pgURL)
+			if err != nil {
+				log.Fatal(err)
+			}
+			dbstore = repo
+			return
 		}
-		dbstore = repo
-		return
-	}
-*/
+	*/
 	if os.Getenv("REDIS_URL") != "" {
 		redisURL := os.Getenv("REDIS_URL")
 		repo, err := redis.NewRedisRepo(redisURL)
@@ -47,8 +47,17 @@ func init() {
 }
 
 //TODO: implement
-func (Server) GetBooksByAuthor(_ context.Context, author *pb.Author) (*pb.BookList, error) {
+func (Server) GetAuthorById(_ context.Context, author *pb.Author) (*pb.BookList, error) {
 	return &pb.BookList{}, nil
+}
+
+//TODO: implement
+func (Server) GetBooksByAuthor(_ context.Context, author *pb.Author) (*pb.BookList, error) {
+	booksbyauthor, err := dbstore.RetrieveBooksByAuthor(author.AuthorID)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.BookList{Books: booksbyauthor}, nil
 }
 
 //TODO: implement
