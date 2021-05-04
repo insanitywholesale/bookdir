@@ -5,8 +5,8 @@ import (
 	"errors"
 	"gitlab.com/insanitywholesale/bookdir/models"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
-	"gitlab.com/insanitywholesale/bookdir/repo/mock"
-	"gitlab.com/insanitywholesale/bookdir/repo/postgres"
+	//"gitlab.com/insanitywholesale/bookdir/repo/mock"
+	//"gitlab.com/insanitywholesale/bookdir/repo/postgres"
 	"gitlab.com/insanitywholesale/bookdir/repo/redis"
 	"log"
 	"os"
@@ -21,6 +21,7 @@ type Server struct {
 var dbstore models.BookDirRepo
 
 func init() {
+/*
 	if os.Getenv("PG_URL") != "" {
 		pgURL := os.Getenv("PG_URL")
 		repo, err := postgres.NewPostgresRepo(pgURL)
@@ -30,6 +31,7 @@ func init() {
 		dbstore = repo
 		return
 	}
+*/
 	if os.Getenv("REDIS_URL") != "" {
 		redisURL := os.Getenv("REDIS_URL")
 		repo, err := redis.NewRedisRepo(redisURL)
@@ -40,8 +42,8 @@ func init() {
 		dbstore = repo
 		return
 	}
-	dbstore, _ = mock.NewMockRepo()
-	return
+	//dbstore, _ = mock.NewMockRepo()
+	//return
 }
 
 //TODO: implement
