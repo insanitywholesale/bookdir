@@ -5,7 +5,7 @@ import (
 	"errors"
 	"gitlab.com/insanitywholesale/bookdir/models"
 	pb "gitlab.com/insanitywholesale/bookdir/proto/v1"
-	//"gitlab.com/insanitywholesale/bookdir/repo/mock"
+	"gitlab.com/insanitywholesale/bookdir/repo/mock"
 	//"gitlab.com/insanitywholesale/bookdir/repo/postgres"
 	"gitlab.com/insanitywholesale/bookdir/repo/redis"
 	"log"
@@ -42,9 +42,8 @@ func init() {
 		dbstore = repo
 		return
 	}
-	//dbstore, _ = mock.NewMockRepo()
-	//return
-	log.Fatal("no DB specified")
+	dbstore, _ = mock.NewMockRepo()
+	return
 }
 
 func (Server) GetAuthorById(_ context.Context, author *pb.Author) (*pb.Author, error) {
