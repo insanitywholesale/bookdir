@@ -44,9 +44,17 @@ func init() {
 	}
 	//dbstore, _ = mock.NewMockRepo()
 	//return
+	log.Fatal("no DB specified")
 }
 
-//TODO: implement
+func (Server) GetAuthorById(_ context.Context, author *pb.Author) (*pb.Author, error) {
+	author, err := dbstore.RetrieveAuthorById(author.AuthorID)
+	if err != nil {
+		return nil, err
+	}
+	return author, nil
+}
+
 func (Server) GetBooksByAuthor(_ context.Context, author *pb.Author) (*pb.BookList, error) {
 	booksbyauthor, err := dbstore.RetrieveBooksByAuthor(author.AuthorID)
 	if err != nil {
@@ -55,7 +63,6 @@ func (Server) GetBooksByAuthor(_ context.Context, author *pb.Author) (*pb.BookLi
 	return &pb.BookList{Books: booksbyauthor}, nil
 }
 
-//TODO: implement
 func (Server) GetAllAuthors(_ context.Context, _ *pb.Empty) (*pb.AuthorList, error) {
 	allauthors, err := dbstore.RetrieveAllAuthors()
 	if err != nil {

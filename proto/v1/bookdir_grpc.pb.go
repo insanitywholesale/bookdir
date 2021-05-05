@@ -21,6 +21,7 @@ type BookDirClient interface {
 	GetAllPublishers(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*PublisherList, error)
 	GetBooksByPublisher(ctx context.Context, in *Publisher, opts ...grpc.CallOption) (*BookList, error)
 	GetAllAuthors(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AuthorList, error)
+	GetAuthorById(ctx context.Context, in *Author, opts ...grpc.CallOption) (*Author, error)
 	GetBooksByAuthor(ctx context.Context, in *Author, opts ...grpc.CallOption) (*BookList, error)
 	GetAllBooks(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BookList, error)
 	GetBookByISBN(ctx context.Context, in *ISBN, opts ...grpc.CallOption) (*Book, error)
@@ -56,6 +57,15 @@ func (c *bookDirClient) GetBooksByPublisher(ctx context.Context, in *Publisher, 
 func (c *bookDirClient) GetAllAuthors(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AuthorList, error) {
 	out := new(AuthorList)
 	err := c.cc.Invoke(ctx, "/bookdir.v1.BookDir/GetAllAuthors", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookDirClient) GetAuthorById(ctx context.Context, in *Author, opts ...grpc.CallOption) (*Author, error) {
+	out := new(Author)
+	err := c.cc.Invoke(ctx, "/bookdir.v1.BookDir/GetAuthorById", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -105,6 +115,7 @@ type BookDirServer interface {
 	GetAllPublishers(context.Context, *Empty) (*PublisherList, error)
 	GetBooksByPublisher(context.Context, *Publisher) (*BookList, error)
 	GetAllAuthors(context.Context, *Empty) (*AuthorList, error)
+	GetAuthorById(context.Context, *Author) (*Author, error)
 	GetBooksByAuthor(context.Context, *Author) (*BookList, error)
 	GetAllBooks(context.Context, *Empty) (*BookList, error)
 	GetBookByISBN(context.Context, *ISBN) (*Book, error)
@@ -124,6 +135,9 @@ func (UnimplementedBookDirServer) GetBooksByPublisher(context.Context, *Publishe
 }
 func (UnimplementedBookDirServer) GetAllAuthors(context.Context, *Empty) (*AuthorList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllAuthors not implemented")
+}
+func (UnimplementedBookDirServer) GetAuthorById(context.Context, *Author) (*Author, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAuthorById not implemented")
 }
 func (UnimplementedBookDirServer) GetBooksByAuthor(context.Context, *Author) (*BookList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBooksByAuthor not implemented")
@@ -200,6 +214,24 @@ func _BookDir_GetAllAuthors_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BookDirServer).GetAllAuthors(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BookDir_GetAuthorById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Author)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookDirServer).GetAuthorById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/bookdir.v1.BookDir/GetAuthorById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookDirServer).GetAuthorById(ctx, req.(*Author))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -294,6 +326,10 @@ var BookDir_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAllAuthors",
 			Handler:    _BookDir_GetAllAuthors_Handler,
+		},
+		{
+			MethodName: "GetAuthorById",
+			Handler:    _BookDir_GetAuthorById_Handler,
 		},
 		{
 			MethodName: "GetBooksByAuthor",
