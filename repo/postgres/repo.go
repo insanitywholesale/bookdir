@@ -48,6 +48,33 @@ func NewPostgresRepo(url string) (*postgresRepo, error) {
 	return repo, nil
 }
 
+func (r *postgresRepo) RetrieveAllAuthors() ([]*pb.Author, error) {
+	var author = &pb.Author{}
+	var authorList []*pb.Author
+
+	rows, err := r.client.Query(`SELECT * FROM Author`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		err = rows.Scan(
+			&author.AuthorID,
+			&author.FirstName,
+			&author.MiddleName,
+			&author.LastName,
+			&author.YearBorn,
+			&author.YearDied,
+			&author.BooksWritten,
+		)
+		if err != nil {
+			return nil, err
+		}
+		authorList = append(authorList, author)
+	}
+	return authorList, nil
+}
+
 func (r *postgresRepo) RetrieveAll() ([]*pb.Book, error) {
 	var author = &pb.Author{}
 	var publisher = &pb.Publisher{}
