@@ -14,7 +14,7 @@ func RunGateway(grpcport string, restport string) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	mux := runtime.NewServeMux()
+	mux := runtime.NewServeMux(runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{OrigName: true, EmitDefaults: true}))
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	err := gw.RegisterBookDirHandlerFromEndpoint(ctx, mux, ":"+grpcport, opts)
 	if err != nil {
