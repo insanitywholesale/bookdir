@@ -48,6 +48,28 @@ func NewPostgresRepo(url string) (*postgresRepo, error) {
 	return repo, nil
 }
 
+func (r *postgresRepo) RetrieveBooksByAuthor(authorId uint32) ([]*pb.Book, error) {
+	return nil, nil
+}
+
+func (r *postgresRepo) RetrieveAuthorById(authorId uint32) (*pb.Author, error) {
+	var author = &pb.Author{}
+	rowAuthor, err := r.client.Query(`SELECT * FROM Author WHERE AuthorID=$1`, authorId)
+	if err != nil {
+		return nil, err
+	}
+	err = rowAuthor.Scan(
+		&author.AuthorID,
+		&author.FirstName,
+		&author.MiddleName,
+		&author.LastName,
+		&author.YearBorn,
+		&author.YearDied,
+		&author.BooksWritten,
+	)
+	return author, nil
+}
+
 func (r *postgresRepo) RetrieveAllAuthors() ([]*pb.Author, error) {
 	var author = &pb.Author{}
 	var authorList []*pb.Author
@@ -121,6 +143,7 @@ func (r *postgresRepo) RetrieveAll() ([]*pb.Book, error) {
 
 		rowAuthor := r.client.QueryRow(authorRetrievalQuery, authID)
 		err = rowAuthor.Scan(
+			&author.AuthorID,
 			&author.FirstName,
 			&author.MiddleName,
 			&author.LastName,
@@ -173,6 +196,7 @@ func (r *postgresRepo) Retrieve(isbn string) (*pb.Book, error) {
 
 	rowAuthor := r.client.QueryRow(authorRetrievalQuery, authID)
 	err = rowAuthor.Scan(
+		&author.AuthorID,
 		&author.FirstName,
 		&author.MiddleName,
 		&author.LastName,
@@ -212,7 +236,7 @@ func (r *postgresRepo) Retrieve(isbn string) (*pb.Book, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	log.Println("retrieved book:", book)
 	return book, nil
 }
 

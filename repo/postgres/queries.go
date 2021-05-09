@@ -9,8 +9,8 @@ var createBookTableQuery = `CREATE TABLE if not exists Book (
 	PublisherID SERIAL REFERENCES Publisher(PublisherID),
 	Pages INTEGER,
 	Category VARCHAR(20),
-	PDF BOOLEAN,
-	Owned BOOLEAN
+	PDF BOOLEAN NOT NULL,
+	Owned BOOLEAN NOT NULL
 );`
 
 var createAuthorTableQuery = `CREATE TABLE if not exists Author (
@@ -32,8 +32,7 @@ var createPublisherTableQuery = `CREATE TABLE if not exists Publisher (
 );`
 
 var bookRetrievalQuery = `SELECT * FROM Book WHERE ISBN=$1;`
-var authorRetrievalQuery = `SELECT FirstName, MiddleName, LastName, YearBorn, YearDied, BooksWritten
-FROM Author WHERE AuthorID=$1;`
+var authorRetrievalQuery = `SELECT * FROM Author WHERE AuthorID=$1;`
 var publisherRetrievalQuery = `SELECT * FROM Publisher WHERE PublisherID=$1`
 
 var bookRetrieveAllQuery = `SELECT * FROM Book`
