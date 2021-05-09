@@ -1,0 +1,24 @@
+{
+  "ISBN": "7010132631",
+  "Title": "Falconcrazy",
+  "Author": {
+    "FirstName": "Jones",
+    "MiddleName": "Miller",
+    "LastName": "Johnson",
+    "YearBorn": 813,
+    "YearDied": 1732,
+    "BooksWritten": 109
+  },
+  "Year": 1652,
+  "Edition": 8,
+  "Publisher": {
+    "Name": "Harris",
+    "YearStarted": 1480,
+    "YearEnded": 1692,
+    "BooksPublished": 558
+  },
+  "Pages": 533,
+  "Category": "Scowlmint",
+  "PDF": false,
+  "Owned": true
+}
