@@ -46,7 +46,6 @@ func (r *redisRepo) RetrieveAllAuthors() ([]*pb.Author, error) {
 		if err != nil {
 			return nil, err
 		}
-		fmt.Println("reply", reply)
 		err = json.Unmarshal([]byte(reply.(string)), book)
 		if err != nil {
 			return nil, err
@@ -69,7 +68,6 @@ func (r *redisRepo) RetrieveBooksByAuthor(authorId uint32) ([]*pb.Book, error) {
 		if err != nil {
 			return nil, err
 		}
-		fmt.Println("reply", reply)
 		err = json.Unmarshal([]byte(reply.(string)), book)
 		if err != nil {
 			return nil, err
@@ -97,7 +95,6 @@ func (r *redisRepo) RetrieveAuthorById(authorId uint32) (*pb.Author, error) {
 		if err != nil {
 			return nil, err
 		}
-		fmt.Println("reply", reply)
 		err = json.Unmarshal([]byte(reply.(string)), book)
 		if err != nil {
 			return nil, err
@@ -122,7 +119,6 @@ func (r *redisRepo) RetrieveAll() ([]*pb.Book, error) {
 		if err != nil {
 			return nil, err
 		}
-		fmt.Println("reply", reply)
 		err = json.Unmarshal([]byte(reply.(string)), book)
 		if err != nil {
 			return nil, err
