@@ -1,6 +1,7 @@
 # next steps
+- don't double-save publishers and authors
 - implement publisher funcs in redis
-- implement author and publisher funcs in postgres
+- implement publisher funcs in postgres
 - rethink how author (and publisher) is handled (what is submitted with a book)
 - add openapi docs to an http endpoint
 - use a list of authors instead of one author
