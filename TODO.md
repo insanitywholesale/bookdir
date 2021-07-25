@@ -1,5 +1,6 @@
 # next steps
 - don't double-save publishers and authors
+- add tests
 - implement publisher funcs in redis
 - implement publisher funcs in postgres
 - rethink how author (and publisher) is handled (what is submitted with a book)
