@@ -32,6 +32,33 @@ var testbook = &pb.Book{
 	Owned:    true,
 }
 
+var testbook2 = &pb.Book{
+	ISBN:  "0605122839",
+	Title: "xey",
+	Author: &pb.Author{
+		AuthorID:     7,
+		FirstName:    "storm",
+		MiddleName:   "u",
+		LastName:     "cloud",
+		YearBorn:     1955,
+		YearDied:     2003,
+		BooksWritten: 9,
+	},
+	Year:    1993,
+	Edition: 3,
+	Publisher: &pb.Publisher{
+		PublisherID:    2,
+		Name:           "poobleesh",
+		YearStarted:    1820,
+		YearEnded:      2177,
+		BooksPublished: 69,
+	},
+	Pages:    420,
+	Category: "test",
+	PDF:      false,
+	Owned:    true,
+}
+
 var authorCount uint32 = 1
 var publisherCount uint32 = 1
 
@@ -39,6 +66,7 @@ type bookrepo []*pb.Book
 
 var testbooks bookrepo = []*pb.Book{
 	testbook,
+	testbook2,
 }
 
 var testbooklist = &pb.BookList{
