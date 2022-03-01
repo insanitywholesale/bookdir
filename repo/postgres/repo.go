@@ -48,6 +48,128 @@ func NewPostgresRepo(url string) (*postgresRepo, error) {
 	return repo, nil
 }
 
+func (r *postgresRepo) RetrieveAllPublishers() ([]*pb.Publisher, error) {
+	var publisher = &pb.Publisher{}
+	var publisherList []*pb.Publisher
+
+	rows, err := r.client.Query(`SELECT * FROM Publisher`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		err = rows.Scan(
+			&publisher.PublisherID,
+			&publisher.Name,
+			&publisher.YearStarted,
+			&publisher.YearEnded,
+			&publisher.BooksPublished,
+		)
+		if err != nil {
+			return nil, err
+		}
+		publisherList = append(publisherList, publisher)
+	}
+	return publisherList, nil
+
+}
+
+func (r *postgresRepo) RetrieveBooksByPublisher(publisherId string) ([]*pb.Book, error) {
+	var author = &pb.Author{}
+	var publisher = &pb.Publisher{}
+	var authID int
+	var pubID int
+
+	var book = &pb.Book{}
+	var bookList []*pb.Book
+
+	rows, err := r.client.Query(`SELECT * FROM Book WHERE PublisherID=$1`, publisherId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		err = rows.Scan(
+			&book.ISBN,
+			&book.Title,
+			&author.AuthorID,
+			&book.Year,
+			&book.Edition,
+			&publisher.PublisherID,
+			&book.Pages,
+			&book.Category,
+			&book.PDF,
+			&book.Owned,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		isbn := book.ISBN
+
+		rowPublisherID := r.client.QueryRow(giveBookGetPublisherID, isbn)
+		err := rowPublisherID.Scan(&pubID)
+		if err != nil {
+			return nil, err
+		}
+		rowAuthorID := r.client.QueryRow(giveBookGetAuthorID, isbn)
+		err = rowAuthorID.Scan(&authID)
+		if err != nil {
+			return nil, err
+		}
+
+		rowAuthor := r.client.QueryRow(authorRetrievalQuery, authID)
+		err = rowAuthor.Scan(
+			&author.AuthorID,
+			&author.FirstName,
+			&author.MiddleName,
+			&author.LastName,
+			&author.YearBorn,
+			&author.YearDied,
+			&author.BooksWritten,
+		)
+		if err != nil {
+			return nil, err
+		}
+		rowPublisher := r.client.QueryRow(publisherRetrievalQuery, pubID)
+		err = rowPublisher.Scan(
+			&publisher.PublisherID,
+			&publisher.Name,
+			&publisher.YearStarted,
+			&publisher.YearEnded,
+			&publisher.BooksPublished,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		book.Author = author
+		book.Publisher = publisher
+
+		bookList = append(bookList, book)
+	}
+	return bookList, nil
+}
+
+func (r *postgresRepo) RetrievePublisherById(publisherId string) (*pb.Publisher, error) {
+	var publisher = &pb.Publisher{}
+	rowPublisher, err := r.client.Query(`SELECT * FROM Publisher WHERE PublisherID=$1`, publisherId)
+	if err != nil {
+		return nil, err
+	}
+	err = rowPublisher.Scan(
+		&publisher.PublisherID,
+		&publisher.Name,
+		&publisher.YearStarted,
+		&publisher.YearEnded,
+		&publisher.BooksPublished,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return nil, nil
+}
+
 func (r *postgresRepo) RetrieveBooksByAuthor(authorId uint32) ([]*pb.Book, error) {
 	var author = &pb.Author{}
 	var publisher = &pb.Publisher{}
@@ -140,6 +262,9 @@ func (r *postgresRepo) RetrieveAuthorById(authorId uint32) (*pb.Author, error) {
 		&author.YearDied,
 		&author.BooksWritten,
 	)
+	if err != nil {
+		return nil, err
+	}
 	return author, nil
 }
 
