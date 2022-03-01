@@ -33,6 +33,79 @@ func (r *redisRepo) generateKey(code string) string {
 	return fmt.Sprintf("book:%s", code)
 }
 
+func (r *redisRepo) RetrieveAllPublishers() ([]*pb.Publisher, error) {
+	var publisherlist []*pb.Publisher
+	keys, err := r.client.Do("KEYS", "book:*").Result()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, b := range keys.([]interface{}) {
+		book := &pb.Book{}
+		reply, err := r.client.Do("GET", b.(string)).Result()
+		if err != nil {
+			return nil, err
+		}
+		err = json.Unmarshal([]byte(reply.(string)), book)
+		if err != nil {
+			return nil, err
+		}
+		publisherlist = append(publisherlist, book.Publisher)
+	}
+	return publisherlist, nil
+}
+
+func (r *redisRepo) RetrieveBooksByPublisher(publisherId uint32) ([]*pb.Book, error) {
+	var booklist []*pb.Book
+	keys, err := r.client.Do("KEYS", "book:*").Result()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, b := range keys.([]interface{}) {
+		book := &pb.Book{}
+		reply, err := r.client.Do("GET", b.(string)).Result()
+		if err != nil {
+			return nil, err
+		}
+		err = json.Unmarshal([]byte(reply.(string)), book)
+		if err != nil {
+			return nil, err
+		}
+		if book.Publisher.PublisherID == publisherId {
+			booklist = append(booklist, book)
+		}
+	}
+	if len(booklist) == 0 {
+		return nil, errors.New("no books by this publisher were found")
+	} else {
+		return booklist, nil
+	}
+}
+
+func (r *redisRepo) RetrievePublisherById(publisherId uint32) (*pb.Publisher, error) {
+	keys, err := r.client.Do("KEYS", "book:*").Result()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, b := range keys.([]interface{}) {
+		book := &pb.Book{}
+		reply, err := r.client.Do("GET", b.(string)).Result()
+		if err != nil {
+			return nil, err
+		}
+		err = json.Unmarshal([]byte(reply.(string)), book)
+		if err != nil {
+			return nil, err
+		}
+		if book.Publisher.PublisherID == publisherId {
+			return book.Publisher, nil
+		}
+	}
+	return nil, errors.New("publisher not found")
+}
+
 func (r *redisRepo) RetrieveAllAuthors() ([]*pb.Author, error) {
 	var authorlist []*pb.Author
 	keys, err := r.client.Do("KEYS", "book:*").Result()
