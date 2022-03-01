@@ -44,6 +44,30 @@ func init() {
 	return
 }
 
+func (Server) GetPublisherById(_ context.Context, publisher *pb.Publisher) (*pb.Publisher, error) {
+	publisher, err := dbstore.RetrievePublisherById(publisher.PublisherID)
+	if err != nil {
+		return nil, err
+	}
+	return publisher, nil
+}
+
+func (Server) GetBooksByPublisher(_ context.Context, publisher *pb.Publisher) (*pb.BookList, error) {
+	booksbypublisher, err := dbstore.RetrieveBooksByAuthor(publisher.PublisherID)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.BookList{Books: booksbypublisher}, nil
+}
+
+func (Server) GetAllPublishers(_ context.Context, _ *pb.Empty) (*pb.PublisherList, error) {
+	allpublishers, err := dbstore.RetrieveAllPublishers()
+	if err != nil {
+		return nil, err
+	}
+	return &pb.PublisherList{Publishers: allpublishers}, nil
+}
+
 func (Server) GetAuthorById(_ context.Context, author *pb.Author) (*pb.Author, error) {
 	author, err := dbstore.RetrieveAuthorById(author.AuthorID)
 	if err != nil {
