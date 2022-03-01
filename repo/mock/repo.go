@@ -77,6 +77,32 @@ func NewMockRepo() (bookrepo, error) {
 	return testbooks, nil
 }
 
+func (bookrepo) RetrieveAllPublishers() ([]*pb.Publisher, error) {
+	publisherlist := []*pb.Publisher{}
+	for _, b := range testbooks {
+		publisherlist = append(publisherlist, b.Publisher)
+	}
+	return publisherlist, nil
+}
+
+func (bookrepo) RetrieveBooksByPublisher(publisherId uint32) ([]*pb.Book, error) {
+	for _, b := range testbooks {
+		if publisherId == b.Publisher.PublisherID {
+			testbooks = append(testbooks, b)
+		}
+	}
+	return testbooks, nil
+}
+
+func (bookrepo) RetrievePublisherById(publisherId uint32) (*pb.Publisher, error) {
+	for _, b := range testbooks {
+		if publisherId == b.Publisher.PublisherID {
+			return b.Publisher, nil
+		}
+	}
+	return nil, errors.New("publisher not found")
+}
+
 func (bookrepo) RetrieveAllAuthors() ([]*pb.Author, error) {
 	authorlist := []*pb.Author{}
 	for _, b := range testbooks {
