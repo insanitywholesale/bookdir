@@ -74,7 +74,7 @@ func (r *postgresRepo) RetrieveAllPublishers() ([]*pb.Publisher, error) {
 
 }
 
-func (r *postgresRepo) RetrieveBooksByPublisher(publisherId string) ([]*pb.Book, error) {
+func (r *postgresRepo) RetrieveBooksByPublisher(publisherId uint32) ([]*pb.Book, error) {
 	var author = &pb.Author{}
 	var publisher = &pb.Publisher{}
 	var authID int
@@ -151,7 +151,7 @@ func (r *postgresRepo) RetrieveBooksByPublisher(publisherId string) ([]*pb.Book,
 	return bookList, nil
 }
 
-func (r *postgresRepo) RetrievePublisherById(publisherId string) (*pb.Publisher, error) {
+func (r *postgresRepo) RetrievePublisherById(publisherId uint32) (*pb.Publisher, error) {
 	var publisher = &pb.Publisher{}
 	rowPublisher, err := r.client.Query(`SELECT * FROM Publisher WHERE PublisherID=$1`, publisherId)
 	if err != nil {
